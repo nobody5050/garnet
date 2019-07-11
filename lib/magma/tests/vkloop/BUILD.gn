@@ -1,0 +1,31 @@
+# Copyright 2017 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//garnet/lib/magma/gnbuild/magma.gni")
+
+executable("vkloop") {
+  testonly = true
+
+  sources = [
+    "main.cc",
+    "vkloop.cc",
+  ]
+
+  deps = [
+    "//garnet/lib/magma/include:magma_abi",
+    "//sdk/fidl/fuchsia.gpu.magma:fuchsia.gpu.magma_c",
+    "//zircon/public/lib/fdio",
+  ]
+  public_deps = [
+    "//garnet/lib/magma/src/magma_util",
+    "//src/lib/fxl/test:test_settings",
+    "//third_party/googletest:gtest",
+  ]
+
+  if (use_vulkan_loader_for_tests) {
+    public_deps += [ "//src/graphics/lib/vulkan" ]
+  } else {
+    public_deps += [ "//garnet/lib/magma/tests/vulkan_shim" ]
+  }
+}

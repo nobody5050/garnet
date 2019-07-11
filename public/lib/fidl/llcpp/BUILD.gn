@@ -1,0 +1,75 @@
+# Copyright 2019 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/fidl/fidl.gni")
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+executable("fidl_llcpp_conformance_test_bin") {
+  testonly = true
+
+  output_name = "fidl_llcpp_conformance_test"
+
+  sources = [
+    "conformance_test.cc",
+  ]
+
+  deps = [
+    "//sdk/lib/fidl/cpp:fidl_test_llcpp",
+    "//src/lib/fxl/test:gtest_main",
+    "//third_party/googletest:gtest",
+    "//zircon/public/lib/async-loop-cpp",
+    "//zircon/public/lib/fbl",
+  ]
+}
+
+unittest_package("fidl_llcpp_conformance_test") {
+  deps = [
+    ":fidl_llcpp_conformance_test_bin",
+  ]
+
+  tests = [
+    {
+      name = "fidl_llcpp_conformance_test"
+      environments = basic_envs
+    },
+  ]
+}
+
+fidl("fidl.llcpp.types.test") {
+  sources = [
+    "types.test.fidl",
+  ]
+}
+
+executable("fidl_llcpp_types_test_bin") {
+  testonly = true
+
+  output_name = "fidl_llcpp_types_test"
+
+  sources = [
+    "bits_test.cc",
+    "union_test.cc",
+  ]
+
+  deps = [
+    ":fidl.llcpp.types.test_llcpp",
+    "//src/lib/fxl/test:gtest_main",
+    "//third_party/googletest:gtest",
+    "//zircon/public/lib/fbl",
+  ]
+}
+
+unittest_package("fidl_llcpp_types_test") {
+  deps = [
+    ":fidl_llcpp_types_test_bin",
+  ]
+
+  tests = [
+    {
+      name = "fidl_llcpp_types_test"
+      environments = basic_envs
+    },
+  ]
+}

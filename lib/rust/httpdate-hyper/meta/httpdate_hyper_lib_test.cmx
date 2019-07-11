@@ -1,0 +1,27 @@
+{
+    "facets": {
+        "fuchsia.test": {
+            "system-services": [
+                "fuchsia.net.Connectivity",
+                "fuchsia.posix.socket.Provider",
+                "fuchsia.net.SocketProvider",
+                "fuchsia.net.stack.Stack",
+                "fuchsia.netstack.Netstack"
+            ]
+        }
+    },
+    "program": {
+        "binary": "test/httpdate_hyper_lib_test"
+    },
+    "sandbox": {
+        "features": [
+            "root-ssl-certificates",
+            "build-info"
+        ],
+        "services": [
+            "fuchsia.net.NameLookup",
+            "fuchsia.posix.socket.Provider",
+            "fuchsia.net.SocketProvider"
+        ]
+    }
+}

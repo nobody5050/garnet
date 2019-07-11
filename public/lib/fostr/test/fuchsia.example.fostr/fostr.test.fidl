@@ -1,0 +1,12 @@
+library fuchsia.example.fostr;
+
+bits ExampleBits {
+    A = 1;
+    B = 2;
+    C = 4;
+};
+
+xunion MyXunion {
+    int32 i;
+    bool b;
+};

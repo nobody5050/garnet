@@ -1,0 +1,12 @@
+{
+    "program": {
+        "binary": "test/isolated_persistent_storage"
+    },
+    "sandbox": {
+        "services": [
+            "fuchsia.sys.Environment",
+            "fuchsia.sys.Launcher",
+            "fuchsia.sys.Loader"
+        ]
+    }
+}

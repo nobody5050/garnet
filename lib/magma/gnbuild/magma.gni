@@ -1,0 +1,149 @@
+# Copyright 2016 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/testing/environments.gni")
+
+declare_args() {
+  magma_build_root = "//garnet/lib/magma"
+  expat_build_root = "//third_party/expat"
+  msd_intel_gen_build_root = "//garnet/drivers/gpu/msd-intel-gen"
+  glm_build_root = "//third_party/glm"
+  zircon_build_root = "//zircon"
+
+  magma_python_path = rebase_path("//third_party/mako")
+
+  # Enable this to include fuchsia tracing capability
+  magma_enable_tracing = true
+
+  # Enable this to have the msd include a suite of tests and invoke them
+  # automatically when the driver starts.
+  magma_enable_developer_build = false
+
+  prebuilt_libvulkan_arm_path = ""
+}
+
+declare_args() {
+  # Mesa doesn't properly handle loader-less operation;
+  # their GetInstanceProcAddr implementation returns 0 for some interfaces.
+  # On ARM there may be multiple libvulkan_arms, so they can't all be linked
+  # to.
+  use_vulkan_loader_for_tests = true
+
+  # The following are lists of targets that will be built as vulkan ICDS. If
+  # more than one target is given then use_vulkan_loader_for_tests must be set
+  # to true, as otherwise tests won't know which libvulkan to use.
+
+  # Targets that will be built as mali vulkan ICDS.
+  build_libvulkan_arm_mali = []
+
+  # Targets that will be built as verisilicon vulkan ICDS.
+  build_libvulkan_vsl_gc = []
+
+  # Targets that will be built as qualcomm vulkan ICDS.
+  build_libvulkan_qcom_adreno = []
+
+  # Targets that will be built as IMG vulkan ICDS.
+  build_libvulkan_img_rgx = []
+
+  # Board files can set this to true if they have a package with a mali libvulkan VCD.
+  board_has_libvulkan_arm_mali = false
+}
+
+have_prebuilt_libvulkan_arm = prebuilt_libvulkan_arm_path != ""
+build_libvulkan = build_libvulkan_arm_mali + build_libvulkan_vsl_gc +
+                  build_libvulkan_qcom_adreno + build_libvulkan_img_rgx
+have_libvulkan = build_libvulkan != [] || have_prebuilt_libvulkan_arm
+
+# Target environments with an Intel GPU.
+intel_gpu_envs = [ nuc_env ]
+
+# Target environments with an ARM Mali GPU.
+arm_gpu_envs = [
+  astro_env,
+  vim2_env,
+]
+
+# General hardware environments for magma tests to target.
+magma_hardware_envs = intel_gpu_envs + arm_gpu_envs
+
+magma_libvulkan_hardware_envs = intel_gpu_envs
+if (build_libvulkan_arm_mali != [] || have_prebuilt_libvulkan_arm ||
+    board_has_libvulkan_arm_mali) {
+  magma_libvulkan_hardware_envs += arm_gpu_envs
+}
+
+template("magma_pci_entry") {
+  source_set(target_name) {
+    assert(defined(invoker.pci_vendor_id), "pci_vendor_id not defined")
+    if (!defined(invoker.test_entry)) {
+      test_entry = false
+    } else {
+      testonly = true
+    }
+
+    forward_variables_from(invoker, "*")
+
+    sources = [
+      "//garnet/lib/magma/src/sys_driver/pci_entry.cc",
+    ]
+    defines = [ "MAGMA_PCI_VENDOR_ID=" + pci_vendor_id ]
+
+    if (!defined(invoker.deps)) {
+      deps = []
+    }
+
+    deps += [ "//zircon/public/lib/ddk" ]
+
+    if (!test_entry) {
+      deps += [ "//garnet/lib/magma/src/sys_driver:entry" ]
+    } else {
+      deps += [ "//garnet/lib/magma/src/sys_driver:test_entry_pci" ]
+    }
+  }
+}
+
+template("magma_pdev_entry") {
+  source_set(target_name) {
+    assert(defined(invoker.pdev_device_id), "pdev_device_id not defined")
+    if (!defined(invoker.test_entry)) {
+      test_entry = false
+    } else {
+      testonly = true
+    }
+
+    forward_variables_from(invoker, "*")
+
+    sources = [
+      "//garnet/lib/magma/src/sys_driver/pdev_entry.cc",
+    ]
+    defines = [ "MAGMA_PDEV_DEVICE_ID=" + pdev_device_id ]
+
+    if (!defined(invoker.deps)) {
+      deps = []
+    }
+
+    deps += [ "//zircon/public/lib/ddk" ]
+
+    if (!test_entry) {
+      deps += [ "//garnet/lib/magma/src/sys_driver:entry" ]
+    } else {
+      deps += [ "//garnet/lib/magma/src/sys_driver:test_entry_pdev" ]
+    }
+  }
+}
+
+template("magma_vulkan_icd") {
+  shared_library(target_name) {
+    forward_variables_from(invoker, "*")
+    if (!is_debug) {
+      version_script =
+          rebase_path("//garnet/lib/magma/scripts/libvulkan.version")
+      if (!defined(invoker.inputs)) {
+        inputs = []
+      }
+      inputs += [ version_script ]
+      ldflags += [ "-Wl,--version-script=$version_script" ]
+    }
+  }
+}

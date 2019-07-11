@@ -1,0 +1,71 @@
+# Copyright 2019 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+#
+# WARNING: This file was machine-generated from previous json files and
+# will eventually be deleted.
+
+group("all") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/benchmarks:all",
+    "//garnet/packages/examples:all",
+    "//garnet/packages/experimental:all",
+    "//garnet/packages/prod:all",
+    "//garnet/packages/testing:all",
+    "//garnet/packages/tests:all",
+    "//garnet/packages/tools:all",
+  ]
+}
+
+group("buildbot") {
+  testonly = true
+  public_deps = [
+    "//bundles:tools",
+    "//garnet/packages:all",
+    "//garnet/packages/config:amber",
+    "//garnet/packages/config:network",
+    "//garnet/packages/config:openssh_keys",
+    "//garnet/packages/config:thermd",
+    "//src/connectivity/wlan:service",
+  ]
+}
+
+group("kitchen_sink") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages:all",
+    "//garnet/packages/config:amber",
+    "//garnet/packages/config:network",
+    "//garnet/packages/config:openssh_keys",
+    "//garnet/packages/config:thermd",
+    "//src/connectivity/wlan:service",
+  ]
+}
+
+group("garnet") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/config:amber",
+    "//garnet/packages/config:network",
+    "//garnet/packages/config:openssh_keys",
+    "//garnet/packages/config:thermd",
+    "//garnet/packages/prod:all",
+    "//src/connectivity/wlan:service",
+  ]
+}
+
+group("default") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages:all",
+    "//garnet/packages/config:amber",
+    "//garnet/packages/config:kernel_crash_checker",
+    "//garnet/packages/config:mediasession",
+    "//garnet/packages/config:network",
+    "//garnet/packages/config:openssh_keys",
+    "//garnet/packages/config:thermd",
+    "//src/connectivity/network/mdns/bundles:config",
+    "//src/connectivity/wlan:service",
+  ]
+}

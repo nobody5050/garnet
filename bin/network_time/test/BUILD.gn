@@ -1,0 +1,60 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+group("test") {
+  testonly = true
+  deps = [
+    ":system_time_updater_test",
+    ":system_time_updater_test_bin",
+  ]
+}
+
+executable("system_time_updater_test_bin") {
+  testonly = true
+  output_name = "system_time_updater_test"
+
+  sources = [
+    "fake_rtc_device.cc",
+    "fake_rtc_device.h",
+    "local_roughtime_server.cc",
+    "local_roughtime_server.h",
+    "settable_time_source.cc",
+    "settable_time_source.h",
+    "system_time_updater_test.cc",
+  ]
+
+  deps = [
+    "//garnet/bin/network_time:lib",
+    "//garnet/bin/network_time:time_util_lib",
+    "//garnet/public/lib/fsl",
+    "//garnet/public/lib/syslog/cpp",
+    "//sdk/lib/sys/cpp",
+    "//sdk/lib/sys/cpp/testing:integration",
+    "//sdk/lib/vfs/cpp",
+    "//src/lib/fxl",
+    "//src/lib/fxl/test:gtest_main",
+    "//third_party/boringssl",
+    "//third_party/googletest:gmock",
+    "//third_party/roughtime:client_lib",
+    "//third_party/roughtime:simple_server_lib",
+    "//zircon/public/fidl/fuchsia-hardware-rtc",
+    "//zircon/public/fidl/fuchsia-io",
+  ]
+}
+
+test_package("system_time_updater_test") {
+  deps = [
+    ":system_time_updater_test_bin",
+  ]
+
+  tests = [
+    {
+      name = "system_time_updater_test"
+      environments = basic_envs
+    },
+  ]
+}

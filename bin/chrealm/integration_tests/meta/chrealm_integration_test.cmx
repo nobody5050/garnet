@@ -1,0 +1,15 @@
+{
+    "program": {
+        "binary": "test/chrealm_integration_test"
+    },
+    "sandbox": {
+        "features": [ "deprecated-shell" ],
+        "services": [
+            "fuchsia.process.Launcher",
+            "fuchsia.process.Resolver",
+            "fuchsia.sys.Launcher",
+            "fuchsia.sys.Loader",
+            "fuchsia.sys.Environment"
+        ]
+    }
+}

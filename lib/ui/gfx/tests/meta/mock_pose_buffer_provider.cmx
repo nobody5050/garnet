@@ -1,0 +1,14 @@
+{
+    "program": {
+        "binary": "bin/app"
+    },
+    "sandbox": {
+        "dev": [
+            "class/display-controller"
+        ],
+        "services": [
+            "fuchsia.tracing.provider.Registry",
+            "fuchsia.ui.scenic.Scenic"
+        ]
+    }
+}

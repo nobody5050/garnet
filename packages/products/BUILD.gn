@@ -1,0 +1,105 @@
+# Copyright 2019 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+#
+# WARNING: This file was machine-generated from previous json files and
+# will eventually be deleted.
+
+group("interactive_minimal") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/config:mediasession",
+    "//garnet/packages/config:shortcut",
+    "//garnet/packages/prod:display_manager",
+    "//garnet/packages/prod:fonts",
+    "//garnet/packages/prod:media_audio",
+    "//garnet/packages/prod:media_codec",
+    "//garnet/packages/prod:mediaplayer",
+    "//garnet/packages/prod:mediasession",
+    "//garnet/packages/prod:vboot_reference",
+    "//garnet/packages/products:graphical",
+    "//src/ui/a11y",
+  ]
+}
+
+group("network_wifi_devtools") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/products:devtools",
+    "//garnet/packages/products:network_wifi",
+    "//garnet/packages/tools:netstack",
+    "//src/connectivity/wlan:tools",
+  ]
+}
+
+group("devtools") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:cmdutils",
+    "//garnet/packages/prod:debug_agent",
+    "//garnet/packages/prod:debugserver",
+    "//garnet/packages/prod:far",
+    "//garnet/packages/prod:installblob",
+    "//garnet/packages/prod:iquery",
+    "//garnet/packages/prod:pm",
+    "//garnet/packages/prod:run",
+    "//garnet/packages/prod:ssh",
+    "//garnet/packages/prod:tracing",
+    "//garnet/packages/testing:all",
+    "//garnet/packages/tools:all",
+    "//src/developer/memory/mem",
+  ]
+}
+
+group("network_wifi") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/config:network",
+    "//garnet/packages/prod:netstack",
+    "//garnet/packages/prod:runtime",
+    "//src/connectivity/wlan:service",
+  ]
+}
+
+group("base") {
+  testonly = true
+  public_deps = [
+    "//build/info:build-info",
+    "//garnet/go/src/amber:pkgfs",
+    "//garnet/packages/config:amber",
+    "//garnet/packages/config:network",
+    "//garnet/packages/config:openssh_keys",
+    "//garnet/packages/config:thermd",
+    "//garnet/packages/prod:amber",
+    "//garnet/packages/prod:auth",
+    "//garnet/packages/prod:bluetooth_core",
+    "//garnet/packages/prod:bluetooth_profiles",
+    "//garnet/packages/prod:cobalt_client",
+    "//garnet/packages/prod:device_settings",
+    "//garnet/packages/prod:log_listener",
+    "//garnet/packages/prod:logger",
+    "//garnet/packages/prod:netstack",
+    "//garnet/packages/prod:network",
+    "//garnet/packages/prod:network_time",
+    "//garnet/packages/prod:openssh",
+    "//garnet/packages/prod:pkg_cache",
+    "//garnet/packages/prod:pkg_resolver",
+    "//garnet/packages/prod:root_ssl_certificates",
+    "//garnet/packages/prod:runtime",
+    "//garnet/packages/prod:scpi",
+    "//garnet/packages/prod:setui_service",
+    "//garnet/packages/prod:stash",
+    "//garnet/packages/prod:thermd",
+    "//garnet/packages/prod:timezone",
+  ]
+}
+
+group("graphical") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:scenic",
+    "//garnet/packages/products:base",
+    "//src/connectivity/network/mdns/bundles:config",
+    "//src/connectivity/network/mdns/bundles:services",
+  ]
+}

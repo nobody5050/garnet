@@ -1,0 +1,14 @@
+{
+    "program": {
+        "binary": "test/run_test_component_unittests"
+    },
+    "sandbox": {
+        "features": [
+            "system-temp"
+        ],
+        "services": [
+            "fuchsia.logger.LogSink",
+            "fuchsia.sys.Launcher"
+        ]
+    }
+}

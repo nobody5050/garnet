@@ -1,0 +1,25 @@
+# Copyright 2019 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/go/go_binary.gni")
+import("//build/go/go_library.gni")
+
+go_library("lib") {
+  name = "fuchsia.googlesource.com/grand_unified_binary"
+
+  deps = [
+    "//garnet/go/src/amber:lib",
+    "//garnet/go/src/amber/system_updater:lib",
+    "//garnet/go/src/pmd",
+    "//src/connectivity/network/netstack:netstack_lib",
+  ]
+}
+
+go_binary("grand_unified_binary") {
+  gopackage = "fuchsia.googlesource.com/grand_unified_binary"
+
+  deps = [
+    ":lib",
+  ]
+}

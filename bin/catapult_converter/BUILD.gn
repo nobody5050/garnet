@@ -1,0 +1,90 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/host.gni")
+import("//build/package.gni")
+import("//build/test.gni")
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+source_set("converter") {
+  sources = [
+    "converter.cc",
+  ]
+  deps = [
+    "//src/lib/fxl",
+    "//third_party/rapidjson",
+  ]
+}
+
+executable("converter_bin") {
+  output_name = "catapult_converter"
+
+  sources = [
+    "main.cc",
+  ]
+  deps = [
+    ":converter",
+    "//third_party/rapidjson",
+  ]
+}
+
+package("catapult_converter") {
+  deps = [
+    ":converter_bin",
+    ":host_tools",
+  ]
+
+  meta = [
+    {
+      path = "meta/catapult_converter.cmx"
+      dest = "catapult_converter.cmx"
+    },
+  ]
+
+  binaries = [
+    {
+      name = "catapult_converter"
+      shell = true
+    },
+  ]
+}
+
+test("catapult_converter_unittest") {
+  sources = [
+    "converter_unittest.cc",
+  ]
+
+  deps = [
+    ":converter",
+    "//src/lib/fxl",
+    "//src/lib/fxl/test:gtest_main",
+    "//third_party/googletest:gtest",
+    "//third_party/rapidjson",
+  ]
+}
+
+test_package("catapult_converter_tests") {
+  deps = [
+    ":catapult_converter_unittest",
+  ]
+
+  tests = [
+    {
+      name = "catapult_converter_unittest"
+      dest = "catapult_converter_tests"
+      environments = basic_envs
+    },
+  ]
+}
+
+install_host_tools("host_tools") {
+  deps = [
+    ":converter_bin",
+  ]
+
+  outputs = [
+    "catapult_converter",
+  ]
+}

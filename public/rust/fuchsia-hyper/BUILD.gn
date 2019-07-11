@@ -1,0 +1,35 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/rustc_library.gni")
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+rustc_library("fuchsia-hyper") {
+  name = "fuchsia_hyper"
+  edition = "2018"
+  version = "0.1.0"
+  with_unit_tests = true
+  deps = [
+    "//garnet/lib/rust/webpki-roots-fuchsia",
+    "//garnet/public/rust/fuchsia-async",
+    "//third_party/rust_crates:futures-preview",
+    "//third_party/rust_crates:hyper",
+    "//third_party/rust_crates:hyper-rustls",
+    "//third_party/rust_crates:rustls",
+  ]
+}
+
+test_package("fuchsia-hyper-tests") {
+  deps = [
+    ":fuchsia-hyper_test",
+  ]
+
+  tests = [
+    {
+      name = "fuchsia_hyper_lib_test"
+      environments = basic_envs
+    },
+  ]
+}

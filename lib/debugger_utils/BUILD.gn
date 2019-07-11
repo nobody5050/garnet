@@ -1,0 +1,149 @@
+# Copyright 2016 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/package.gni")
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+# A collection of utilities useful to debuggers and similar programs.
+
+static_library("debugger_utils") {
+  sources = [
+    "argv.cc",
+    "argv.h",
+    "breakpoints.h",
+    "build_ids.cc",
+    "build_ids.h",
+    "byte_block.h",
+    "byte_block_file.cc",
+    "byte_block_file.h",
+    "elf_reader.cc",
+    "elf_reader.h",
+    "elf_symtab.cc",
+    "elf_symtab.h",
+    "ktrace_reader.cc",
+    "ktrace_reader.h",
+    "load_maps.cc",
+    "load_maps.h",
+    "util.cc",
+    "util.h",
+  ]
+
+  if (is_fuchsia) {
+    sources += [
+      "breakpoints.cc",
+      "dso_list.cc",
+      "dso_list.h",
+      "dump_thread.cc",
+      "jobs.cc",
+      "jobs.h",
+      "processes.cc",
+      "processes.h",
+      "registers.cc",
+      "registers.h",
+      "sysinfo.cc",
+      "sysinfo.h",
+      "threads.cc",
+      "threads.h",
+      "util_zx.cc",
+    ]
+  }
+
+  if (current_cpu == "x64") {
+    sources += [
+      "x86_cpuid.cc",
+      "x86_cpuid.h",
+      "x86_pt.cc",
+      "x86_pt.h",
+    ]
+  }
+
+  public_deps = [
+    "//src/lib/fxl",
+    "//zircon/public/lib/zircon-internal",
+  ]
+
+  deps = [
+    "//zircon/public/lib/fit",
+  ]
+
+  if (is_fuchsia) {
+    deps += [ "//zircon/public/lib/inspector" ]
+    public_deps += [
+      "//garnet/lib/process",
+      "//zircon/public/fidl/fuchsia-sysinfo:fuchsia-sysinfo_c",
+      "//zircon/public/lib/fdio",
+      "//zircon/public/lib/zx",
+    ]
+  } else {
+    deps += [ "//zircon/system/public" ]
+  }
+}
+
+executable("tests") {
+  testonly = true
+  output_name = "debugger_utils_tests"
+
+  sources = [
+    "argv_unittest.cc",
+    "jobs_unittest.cc",
+    "processes_unittest.cc",
+    "test_helper_fixture.cc",
+    "test_helper_fixture.h",
+    "threads_unittest.cc",
+    "util_unittest.cc",
+    "util_zx_unittest.cc",
+  ]
+
+  deps = [
+    ":debugger_utils",
+    "//src/lib/fxl",
+    "//src/lib/fxl/test:gtest_main",
+    "//third_party/googletest:gtest",
+    "//zircon/public/lib/fdio",
+    "//zircon/public/lib/zx",
+  ]
+
+  libs = [ "zircon" ]
+}
+
+executable("test_helper") {
+  testonly = true
+
+  # US-142: This binary has a long name because it has to be unique within
+  # the entire system.
+  output_name = "debugger_utils_test_helper"
+
+  sources = [
+    "test_helper.cc",
+  ]
+
+  deps = [
+    ":debugger_utils",
+    "//zircon/public/lib/zx",
+  ]
+
+  libs = [ "zircon" ]
+}
+
+test_package("debugger_utils_tests") {
+  deps = [
+    ":test_helper",
+    ":tests",
+  ]
+
+  binaries = [
+    {
+      name = "debugger_utils_test_helper"
+      dest = "test_helper"
+    },
+  ]
+
+  tests = [
+    {
+      name = "debugger_utils_tests"
+      environments = basic_envs
+    },
+  ]
+}

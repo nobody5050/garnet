@@ -1,0 +1,19 @@
+{
+    "program": {
+        "binary": "bin/root_presenter"
+    },
+    "sandbox": {
+        "dev": [
+            "class/input"
+        ],
+        "features": [
+            "config-data"
+        ],
+        "services": [
+            "fuchsia.recovery.FactoryReset",
+            "fuchsia.tracing.provider.Registry",
+            "fuchsia.ui.scenic.Scenic",
+            "fuchsia.ui.shortcut.Manager"
+        ]
+    }
+}

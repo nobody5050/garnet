@@ -1,0 +1,32 @@
+# Copyright 2017 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+executable("pose_buffer_presenter") {
+  output_name = "pose_buffer_presenter"
+
+  sources = [
+    "app.cc",
+    "app.h",
+    "main.cc",
+  ]
+
+  deps = [
+    "//garnet/public/lib/component/cpp",
+    "//garnet/public/lib/fsl",
+    "//garnet/public/lib/ui/scenic/cpp",
+    "//sdk/fidl/fuchsia.ui.gfx",
+    "//sdk/lib/fidl/cpp",
+    "//src/lib/fxl",
+    "//src/ui/lib/escher",
+    "//src/ui/lib/glm_workaround",
+  ]
+
+  include_dirs = [
+    "//src/ui/lib/escher",
+    "//third_party/glm",
+    "//lib",
+  ]
+
+  defines = [ "GLM_ENABLE_EXPERIMENTAL" ]
+}

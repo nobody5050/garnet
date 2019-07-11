@@ -1,0 +1,84 @@
+# Copyright 2019 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/package.gni")
+import("//build/rust/rustc_binary.gni")
+import("//build/test/test_package.gni")
+
+rustc_binary("bin") {
+  name = "setui_client"
+  with_unit_tests = true
+  edition = "2018"
+
+  deps = [
+    "//garnet/public/lib/fidl/rust/fidl",
+    "//garnet/public/rust/fdio",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-component",
+    "//garnet/public/rust/fuchsia-syslog",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//sdk/fidl/fuchsia.devicesettings:fuchsia.devicesettings-rustc",
+    "//sdk/fidl/fuchsia.setui:fuchsia.setui-rustc",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+    "//third_party/rust_crates:log",
+    "//third_party/rust_crates:parking_lot",
+    "//third_party/rust_crates:structopt",
+    "//zircon/public/fidl/fuchsia-device-manager:fuchsia-device-manager-rustc",
+  ]
+}
+
+package("setui_client") {
+  deps = [
+    ":bin",
+  ]
+
+  binary = "setui_client"
+
+  meta = [
+    {
+      path = rebase_path("meta/setui_client.cmx")
+      dest = "setui_client.cmx"
+    },
+  ]
+}
+
+unittest_package("setui_client_tests") {
+  deps = [
+    ":bin_test",
+  ]
+
+  tests = [
+    {
+      name = "setui_client_bin_test"
+    },
+  ]
+}
+
+rustc_binary("setui_client_interface_test_bin") {
+  name = "setui_client_interface_test"
+  edition = "2018"
+  deps = [
+    "//garnet/public/lib/fidl/rust/fidl",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-component",
+    "//sdk/fidl/fuchsia.setui:fuchsia.setui-rustc",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+  ]
+  source_root = "src/interface_test.rs"
+}
+
+test_package("setui_client_interface_test") {
+  deps = [
+    ":setui_client_interface_test_bin",
+  ]
+
+  tests = [
+    {
+      name = "setui_client_interface_test"
+      environments = basic_envs
+    },
+  ]
+}

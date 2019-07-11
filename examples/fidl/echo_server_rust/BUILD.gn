@@ -1,0 +1,37 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/package.gni")
+import("//build/rust/rustc_binary.gni")
+
+rustc_binary("echo_server_rust_bin") {
+  name = "echo_server_rust"
+  edition = "2018"
+
+  deps = [
+    "//garnet/examples/fidl/services:echo-rustc",
+    "//garnet/public/lib/fidl/rust/fidl",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-component",
+    "//garnet/public/rust/fuchsia-runtime",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+  ]
+}
+
+deprecated_fuchsia_component("echo_server_rust_component") {
+  manifest = rebase_path("../meta/echo_server.cmx")
+  manifest_dest = "meta/echo_server_rust.cmx"
+  deps = [
+    ":echo_server_rust_bin",
+  ]
+
+  binary = "echo_server_rust"
+  binary_dest = "bin/echo_server"
+}
+
+package("echo_server_rust") {
+  components = [ ":echo_server_rust_component" ]
+}

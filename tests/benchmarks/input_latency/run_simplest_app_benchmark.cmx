@@ -1,0 +1,22 @@
+{
+    "program": {
+        "binary": "bin/run_simplest_app_benchmark.sh"
+    },
+    "sandbox": {
+        "features": [
+            "deprecated-shell"
+        ],
+        "services": [
+            "fuchsia.process.Launcher",
+            "fuchsia.process.Resolver",
+            "fuchsia.sys.Environment",
+            "fuchsia.sys.Launcher",
+            "fuchsia.sys.Loader",
+            "fuchsia.tracing.provider.Registry",
+            "fuchsia.tracing.controller.Controller",
+            "fuchsia.ui.input.ImeService",
+            "fuchsia.ui.input.InputDeviceRegistry",
+            "fuchsia.ui.input.InputDispatcher"
+        ]
+    }
+}

@@ -1,0 +1,63 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+source_set("cpp") {
+  sources = [
+    "base_view.cc",
+    "base_view.h",
+    "embedded_view_utils.cc",
+    "embedded_view_utils.h",
+    "view_provider_component.cc",
+    "view_provider_component.h",
+    "view_provider_service.cc",
+    "view_provider_service.h",
+  ]
+
+  public_deps = [
+    "//garnet/public/lib/component/cpp",
+    "//garnet/public/lib/ui/gfx/cpp",
+    "//garnet/public/lib/ui/input/cpp",
+    "//sdk/fidl/fuchsia.ui.app",
+    "//sdk/fidl/fuchsia.ui.views",
+    "//sdk/lib/ui/scenic/cpp",
+    "//zircon/public/lib/async-loop-cpp",
+  ]
+
+  deps = [
+    "//zircon/public/lib/trace",
+  ]
+}
+
+executable("unittests") {
+  testonly = true
+  output_name = "base_view_unittests"
+
+  sources = [
+    "base_view_unittest.cc",
+  ]
+
+  deps = [
+    ":cpp",
+    "//garnet/public/lib/component/cpp/testing",
+    "//garnet/public/lib/gtest",
+    "//garnet/public/lib/gtest",
+    "//src/lib/fxl/test:gtest_main",
+    "//third_party/googletest:gmock",
+  ]
+}
+
+unittest_package("base_view_unittests") {
+  deps = [
+    ":unittests",
+  ]
+  tests = [
+    {
+      name = "base_view_unittests"
+      environments = basic_envs
+    },
+  ]
+}

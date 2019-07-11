@@ -1,0 +1,13 @@
+{
+    "program": {
+        "binary": "bin/pkgctl"
+    },
+    "sandbox": {
+        "services": [
+            "fuchsia.pkg.PackageCache",
+            "fuchsia.pkg.PackageResolver",
+            "fuchsia.pkg.RepositoryManager",
+            "fuchsia.pkg.rewrite.Engine"
+        ]
+    }
+}

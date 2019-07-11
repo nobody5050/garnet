@@ -1,0 +1,92 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/package.gni")
+import("//build/persist_logs.gni")
+import("//build/rust/rustc_binary.gni")
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+declare_args() {
+  # Controls how many bytes of space on disk are used to persist device logs.
+  # Should be a string value that only contains digits.
+  max_log_disk_usage = "0"
+  log_startup_sleep = "30000"
+}
+
+rustc_binary("bin") {
+  name = "log_listener"
+  with_unit_tests = true
+  edition = "2018"
+
+  deps = [
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-syslog-listener",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//third_party/rust_crates:chrono",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:regex",
+    "//third_party/rust_crates:tempfile",
+    "//zircon/public/fidl/fuchsia-logger:fuchsia-logger-rustc",
+  ]
+}
+
+package("log_listener_shell") {
+  deps = [
+    ":bin",
+  ]
+
+  binaries = [
+    {
+      name = "log_listener"
+      dest = "log_listener"
+      shell = true
+    },
+  ]
+}
+
+package("log_listener") {
+  deps = [
+    ":bin",
+  ]
+
+  binaries = [
+    {
+      name = "log_listener"
+    },
+  ]
+
+  meta = [
+    {
+      path = rebase_path("meta/log_listener.cmx")
+      dest = "log_listener.cmx"
+    },
+  ]
+
+  if (persist_logs) {
+    data_deps = [
+      ":all_logs",
+    ]
+  }
+}
+
+test_package("log_listener_tests") {
+  deps = [
+    ":bin_test",
+  ]
+
+  tests = [
+    {
+      name = "log_listener_bin_test"
+      environments = basic_envs
+    },
+  ]
+}
+
+if (persist_logs) {
+  persist_logs("all_logs") {
+    max_disk_usage = max_log_disk_usage
+    startup_sleep = log_startup_sleep
+  }
+}

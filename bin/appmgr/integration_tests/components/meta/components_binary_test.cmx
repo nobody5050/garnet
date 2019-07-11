@@ -1,0 +1,14 @@
+{
+    "program": {
+        "binary": "test/components_binary_test"
+    },
+    "sandbox": {
+        "features": [
+            "deprecated-shell"
+        ],
+        "services": [
+            "fuchsia.sys.Environment",
+            "fuchsia.sys.Loader"
+        ]
+    }
+}

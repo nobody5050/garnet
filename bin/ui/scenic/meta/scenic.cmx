@@ -1,0 +1,22 @@
+{
+    "program": {
+        "binary": "bin/scenic"
+    },
+    "sandbox": {
+        "dev": [
+            "class/display-controller"
+        ],
+        "features": [
+            "vulkan",
+            "system-temp"
+        ],
+        "services": [
+            "fuchsia.logger.LogSink",
+            "fuchsia.tracing.provider.Registry",
+            "fuchsia.ui.input.ImeService",
+            "fuchsia.scheduler.ProfileProvider",
+            "fuchsia.sysmem.Allocator",
+            "fuchsia.vulkan.loader.Loader"
+        ]
+    }
+}

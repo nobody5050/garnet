@@ -1,0 +1,11 @@
+{
+    "program": {
+        "binary": "bin/image_grid_cpp"
+    },
+    "sandbox": {
+        "services": [
+            "fuchsia.ui.scenic.Scenic",
+            "fuchsia.tracing.provider.Registry"
+        ]
+    }
+}

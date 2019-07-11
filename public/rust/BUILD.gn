@@ -1,0 +1,76 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+unittest_package("rust-crates-tests") {
+  deps = [
+    "fuchsia-archive:fuchsia-archive_test",
+    "fuchsia-component:fuchsia-component-blackbox-unit-tests",
+    "fuchsia-cprng:fuchsia-cprng_test",
+    "fuchsia-framebuffer",
+    "fuchsia-hyper:fuchsia-hyper-tests",
+    "fuchsia-inspect:fuchsia-inspect_test",
+    "fuchsia-inspect-contrib:fuchsia-inspect-contrib_test",
+    "fuchsia-merkle:fuchsia-merkle_test",
+    "fuchsia-trace:fuchsia-trace_test",
+    "mapped-vmo:mapped-vmo_test",
+    "mundane:mundane_test",
+    "packet:packet_test",
+    "shared-buffer:shared-buffer_test",
+    "zerocopy:zerocopy_test",
+  ]
+
+  tests = [
+    {
+      name = "fuchsia_archive_lib_test"
+      environments = basic_envs
+    },
+    {
+      name = "fuchsia_component_blackbox_unit_tests"
+      environments = basic_envs
+    },
+    {
+      name = "fuchsia_cprng_lib_test"
+      environments = basic_envs
+    },
+    {
+      name = "fuchsia_inspect_lib_test"
+      environments = basic_envs
+    },
+    {
+      name = "fuchsia_inspect_contrib_lib_test"
+      environments = basic_envs
+    },
+    {
+      name = "fuchsia_merkle_lib_test"
+      environments = basic_envs
+    },
+    {
+      name = "fuchsia_trace_lib_test"
+      environments = basic_envs
+    },
+    {
+      name = "mapped_vmo_lib_test"
+      environments = basic_envs
+    },
+    {
+      name = "mundane_lib_test"
+      environments = basic_envs
+    },
+    {
+      name = "packet_lib_test"
+      environments = basic_envs
+    },
+    {
+      name = "shared_buffer_lib_test"
+      environments = basic_envs
+    },
+    {
+      name = "zerocopy_lib_test"
+      environments = basic_envs
+    },
+  ]
+}

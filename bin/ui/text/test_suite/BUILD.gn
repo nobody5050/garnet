@@ -1,0 +1,60 @@
+# Copyright 2019 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/package.gni")
+import("//build/rust/rustc_binary.gni")
+import("//build/test/test_package.gni")
+
+rustc_binary("test_suite") {
+  name = "text_test_suite"
+  with_unit_tests = true
+  edition = "2018"
+
+  deps = [
+    "//garnet/lib/ui/text/common:text_common",
+    "//garnet/public/lib/fidl/rust/fidl",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-component",
+    "//garnet/public/rust/fuchsia-syslog",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//garnet/public/rust/mundane",
+    "//sdk/fidl/fuchsia.ui.text:fuchsia.ui.text-rustc",
+    "//sdk/fidl/fuchsia.ui.text.testing:fuchsia.ui.text.testing-rustc",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+    "//third_party/rust_crates:lazy_static",
+    "//third_party/rust_crates:parking_lot",
+    "//third_party/rust_crates:pin-utils",
+    "//third_party/rust_crates:regex",
+    "//third_party/rust_crates:unicode-segmentation",
+  ]
+}
+
+package("text_test_suite") {
+  deps = [
+    ":test_suite",
+  ]
+
+  binary = "text_test_suite"
+
+  meta = [
+    {
+      path = rebase_path("meta/test_suite.cmx")
+      dest = "test_suite.cmx"
+    },
+  ]
+}
+
+test_package("text_test_suite_tests") {
+  deps = [
+    ":test_suite_test",
+  ]
+
+  tests = [
+    {
+      name = "text_test_suite_bin_test"
+      dest = "text_test_suite_unittests"
+    },
+  ]
+}

@@ -1,0 +1,23 @@
+{
+    "program": {
+        "binary": "bin/run_yuv_to_image_pipe_benchmark.sh"
+    },
+    "sandbox": {
+        "features": [
+            "deprecated-shell"
+        ],
+        "services": [
+            "fuchsia.process.Launcher",
+            "fuchsia.process.Resolver",
+            "fuchsia.sys.Environment",
+            "fuchsia.sys.Launcher",
+            "fuchsia.sys.Loader",
+            "fuchsia.tracing.provider.Registry",
+            "fuchsia.tracing.controller.Controller",
+            "fuchsia.ui.input.ImeService",
+            "fuchsia.ui.input.InputDeviceRegistry",
+            "fuchsia.ui.input.InputDispatcher",
+            "fuchsia.ui.policy.Presenter"
+        ]
+    }
+}

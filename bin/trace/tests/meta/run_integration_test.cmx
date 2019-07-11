@@ -1,0 +1,19 @@
+{
+    "program": {
+        "binary": "bin/run_integration_test"
+    },
+    "sandbox": {
+        "features": [
+            "isolated-persistent-storage",
+            "system-temp"
+        ],
+        "services": [
+            "fuchsia.process.Launcher",
+            "fuchsia.sys.Launcher",
+            "fuchsia.tracing.controller.Controller"
+        ],
+        "system": [
+            "bin"
+        ]
+    }
+}

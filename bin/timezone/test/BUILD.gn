@@ -1,0 +1,74 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+group("test") {
+  testonly = true
+  deps = [
+    ":deprecated_timezone_unit_tests",
+    ":timezone_tests",
+    ":timezone_unittests",
+  ]
+}
+
+executable("timezone_unittests") {
+  testonly = true
+
+  output_name = "timezone_unittests"
+
+  sources = [
+    "timezone_unittest.cc",
+  ]
+
+  deps = [
+    "//garnet/bin/timezone:lib",
+    "//garnet/public/lib/gtest",
+    "//sdk/lib/sys/cpp/testing:unit",
+    "//src/lib/fxl/test:gtest_main",
+  ]
+}
+
+executable("deprecated_timezone_unit_tests") {
+  testonly = true
+
+  output_name = "deprecated_timezone_unit_tests"
+
+  sources = [
+    "deprecated_timezone_unit_test.cc",
+  ]
+
+  deps = [
+    "//garnet/bin/timezone:lib",
+    "//garnet/public/lib/gtest",
+    "//sdk/lib/sys/cpp/testing:unit",
+    "//src/lib/fxl/test:gtest_main",
+  ]
+}
+
+test_package("timezone_tests") {
+  deps = [
+    ":deprecated_timezone_unit_tests",
+    ":timezone_unittests",
+  ]
+
+  resources = [
+    {
+      path = rebase_path("//third_party/icu/common/icudtl.dat")
+      dest = "icudtl.dat"
+    },
+  ]
+
+  tests = [
+    {
+      name = "timezone_unittests"
+      environments = basic_envs
+    },
+    {
+      name = "deprecated_timezone_unit_tests"
+      environments = basic_envs
+    },
+  ]
+}

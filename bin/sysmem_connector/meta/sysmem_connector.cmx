@@ -1,0 +1,13 @@
+{
+    "program": {
+        "binary": "bin/sysmem_connector"
+    },
+    "sandbox": {
+        "dev": [
+            "class/sysmem"
+        ],
+        "services": [
+            "fuchsia.tracing.provider.Registry"
+        ]
+    }
+}

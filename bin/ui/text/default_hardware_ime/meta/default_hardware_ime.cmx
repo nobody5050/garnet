@@ -1,0 +1,12 @@
+{
+    "program": {
+        "data": "data/default_hardware_ime"
+    },
+    "sandbox": {
+        "services": [
+            "fuchsia.logger.LogSink",
+            "fuchsia.sys.Environment",
+            "fuchsia.ui.text.TextInputContext"
+        ]
+    }
+}

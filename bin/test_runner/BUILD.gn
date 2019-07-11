@@ -1,0 +1,75 @@
+# Copyright 2017 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/package.gni")
+
+# TODO(MF-206): all of the following should be moved to components. In the
+# future, only run-integration-tests should remain as a shell=true binary.
+
+group("test_runner") {
+  testonly = true
+  deps = [
+    ":run_integration_tests",
+    ":run_test",
+    ":test_runner_tests",
+    "report_result",
+    "run_integration_tests",
+    "run_test",
+    "test",
+  ]
+}
+
+package("run_integration_tests") {
+  deps = [
+    "report_result",
+    "run_integration_tests",
+  ]
+
+  binaries = [
+    {
+      name = "report_result"
+      shell = true
+    },
+    {
+      name = "run_integration_tests"
+      shell = true
+    },
+  ]
+}
+
+package("run_test") {
+  deps = [
+    "run_test",
+  ]
+
+  binaries = [
+    {
+      name = "run_test"
+      shell = true
+    },
+  ]
+}
+
+package("test_runner_tests") {
+  testonly = true
+
+  deps = [
+    "test",
+  ]
+
+  binaries = [
+    {
+      name = "fake_command"
+      shell = true
+    },
+    {
+      name = "fake_failing_test"
+      shell = true
+    },
+    {
+      name = "fake_passing_test"
+      shell = true
+    },
+  ]
+}

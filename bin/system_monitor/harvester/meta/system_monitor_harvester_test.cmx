@@ -1,0 +1,18 @@
+{
+    "program": {
+        "binary": "test/system_monitor_harvester_test"
+    },
+    "sandbox": {
+        "dev": [
+            "misc/sysinfo"
+        ],
+        "features": [
+            "deprecated-shell"
+        ],
+        "services": [
+            "fuchsia.net.NameLookup",
+            "fuchsia.posix.socket.Provider",
+            "fuchsia.net.SocketProvider"
+        ]
+    }
+}

@@ -1,0 +1,144 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/go/go_binary.gni")
+import("//build/go/go_library.gni")
+import("//build/go/go_test.gni")
+import("//build/host.gni")
+
+go_library("fidl_lib") {
+  name = "fidl"
+
+  deps = [
+    "//garnet/public/go/third_party:github.com/google/go-cmp",
+  ]
+}
+
+go_binary("fidlgen") {
+  gopackage = "fidl/compiler/backend"
+
+  sdk_category = "partner"
+
+  deps = [
+    ":fidl_lib",
+  ]
+}
+
+go_binary("fidlgen_llcpp") {
+  gopackage = "fidl/compiler/llcpp_backend"
+
+  sdk_category = "partner"
+
+  deps = [
+    ":fidl_lib",
+  ]
+}
+
+install_host_tools("fidl") {
+  deps = [
+    ":fidlgen",
+    ":fidlgen_llcpp",
+  ]
+  outputs = [
+    "fidlgen",
+    "fidlgen_llcpp",
+  ]
+}
+
+go_library("fidlgen_test_lib") {
+  deps = [
+    ":fidl_lib",
+  ]
+  if (is_linux || is_mac) {
+    non_go_deps = [ "compiler/backend/goldens" ]
+  }
+}
+
+go_test("fidlgen_cpp_test") {
+  gopackage = "fidl/compiler/backend/cpp"
+
+  deps = [
+    ":fidlgen_test_lib",
+  ]
+}
+
+go_test("fidlgen_cpp_ir_test") {
+  gopackage = "fidl/compiler/backend/cpp/ir"
+
+  deps = [
+    ":fidlgen_test_lib",
+  ]
+}
+
+go_test("fidlgen_llcpp_test") {
+  gopackage = "fidl/compiler/llcpp_backend"
+
+  deps = [
+    ":fidlgen_test_lib",
+  ]
+}
+
+go_test("fidlgen_cpp_overnet_internal_test") {
+  gopackage = "fidl/compiler/backend/cpp_overnet_internal"
+
+  deps = [
+    ":fidlgen_test_lib",
+  ]
+}
+
+go_test("fidlgen_golang_test") {
+  gopackage = "fidl/compiler/backend/golang"
+
+  deps = [
+    ":fidlgen_test_lib",
+  ]
+}
+
+go_test("fidlgen_golang_ir_test") {
+  gopackage = "fidl/compiler/backend/golang/ir"
+
+  deps = [
+    ":fidlgen_test_lib",
+  ]
+}
+
+go_test("fidlgen_rust_test") {
+  gopackage = "fidl/compiler/backend/rust"
+
+  deps = [
+    ":fidlgen_test_lib",
+  ]
+}
+
+go_test("fidlgen_rust_ir_test") {
+  gopackage = "fidl/compiler/backend/rust/ir"
+
+  deps = [
+    ":fidlgen_test_lib",
+  ]
+}
+
+go_test("fidlgen_syzkaller_test") {
+  gopackage = "fidl/compiler/backend/syzkaller"
+
+  deps = [
+    ":fidlgen_test_lib",
+  ]
+}
+
+go_test("fidlgen_syzkaller_ir_test") {
+  gopackage = "fidl/compiler/backend/syzkaller/ir"
+
+  deps = [
+    ":fidlgen_test_lib",
+  ]
+}
+
+go_test("fidlgen_types_test") {
+  gopackage = "fidl/compiler/backend/types"
+
+  deps = [
+    ":fidlgen_test_lib",
+  ]
+}

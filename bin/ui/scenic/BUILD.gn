@@ -1,0 +1,53 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# To build a different Scenic-y executable, cut'n'paste the
+# declare_args() and executable("scenic") into a different
+# BUILD.gn and then modify the args and the executable name,
+# as desired.
+
+declare_args() {
+  enable_gfx_subsystem = true
+  enable_input_subsystem = true
+}
+
+executable("scenic") {
+  sources = [
+    "//garnet/bin/ui/scenic/app.cc",
+    "//garnet/bin/ui/scenic/app.h",
+    "//garnet/bin/ui/scenic/main.cc",
+  ]
+
+  deps = [
+    "//garnet/bin/ui/scenic:base_deps",
+    "//garnet/public/lib/inspect",
+  ]
+  defines = []
+
+  if (enable_gfx_subsystem) {
+    defines += [ "SCENIC_ENABLE_GFX_SUBSYSTEM" ]
+    deps += [ "//garnet/lib/ui/gfx" ]
+  }
+
+  if (enable_input_subsystem) {
+    defines += [ "SCENIC_ENABLE_INPUT_SUBSYSTEM" ]
+    deps += [ "//garnet/lib/ui/input" ]
+  }
+
+  # Extra stack needed to avoid crashes when loading vulkan validation layers
+  # with asan enabled.
+  ldflags = [ "-Wl,-z,stack-size=0x100000" ]
+}
+
+source_set("base_deps") {
+  public_deps = [
+    "//garnet/lib/ui/scenic",
+    "//garnet/public/lib/fsl",
+    "//sdk/lib/fidl/cpp",
+    "//sdk/lib/sys/cpp",
+    "//src/lib/fxl",
+    "//zircon/public/lib/fit",
+    "//zircon/public/lib/trace-provider-with-fdio",
+  ]
+}

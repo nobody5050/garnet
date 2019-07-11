@@ -1,0 +1,428 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "relative-ref-clause": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 101
+    },
+    "path-clause": {
+      "type": "string",
+      "pattern": "^(/[^/]+)+$",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "url-clause": {
+      "type": "string",
+      "pattern": "^[0-9a-z+\\-\\.]+://.+$",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "startup-clause": {
+      "type": "string",
+      "pattern": "^(lazy|eager)$"
+    },
+    "durability-clause": {
+      "type": "string",
+      "pattern": "^(persistent|transient)$"
+    },
+    "name-clause": {
+      "type": "string",
+      "pattern": "^[0-9a-z_\\-\\.]+$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "storage-type-clause": {
+      "type": "string",
+      "enum": [
+        "data",
+        "cache",
+        "meta"
+      ]
+    }
+  },
+  "properties": {
+    "program": {
+      "type": "object",
+      "title": "Program information",
+      "description": "Information required to run the program",
+      "required": [
+        "binary"
+      ],
+      "properties": {
+        "binary": {
+          "type": "string",
+          "title": "Program binary",
+          "description": "The entry point for an executable",
+          "examples": [
+            "bin/app"
+          ]
+        },
+        "args": {
+          "type": "array",
+          "title": "Program arguments",
+          "description": "The arguments to provide to an executable",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "examples": [
+            "--verbose"
+          ]
+        },
+        "env": {
+          "type": "object",
+          "title": "Environment variables",
+          "description": "Environment variables to provide to an executable",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "examples": [
+            {
+              "VERBOSITY": "1"
+            }
+          ]
+        }
+      }
+    },
+    "use": {
+      "type": "array",
+      "title": "Used capabilities",
+      "description": "Capabilities that will be installed in this component's namespace",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "required": [ "service" ]
+          },
+          {
+            "required": [ "directory" ]
+          },
+          {
+            "required": [ "storage" ]
+          }
+        ],
+        "properties": {
+          "service": {
+            "title": "Used service source path",
+            "description": "The path under which a service is offered to this component",
+            "allOf": [{ "$ref": "#/definitions/path-clause" }],
+            "examples": [
+              "/svc/fuchsia.logger.Log"
+            ]
+          },
+          "directory": {
+            "title": "Used directory source path",
+            "description": "The path under which a directory is offered to this component",
+            "allOf": [{ "$ref": "#/definitions/path-clause" }],
+            "examples": [
+              "/data/assets/widgets"
+            ]
+          },
+          "storage": {
+            "title": "Used storage capability",
+            "description": "The type of storage which has been offered to this component",
+            "allOf": [{ "$ref": "#/definitions/storage-type-clause" }],
+            "examples": [
+              "data"
+            ]
+          },
+          "from": {
+            "title": "Used capability source",
+            "pattern": "^(realm|framework)$",
+            "description": "The component which is offering the capability to use. Either \"realm\" (default) or \"framework\"\".",
+            "examples": [
+              "realm",
+              "framework"
+            ]
+          },
+          "as": {
+            "title": "Used capability target path",
+            "description": "The path to which the capability will be installed in the component's incoming namespace. Defaults to \"service\"/\"directory\".",
+            "allOf": [{ "$ref": "#/definitions/path-clause" }],
+            "examples": [
+              "/svc/fuchsia.logger.Log"
+            ]
+          }
+        }
+      }
+    },
+    "expose": {
+      "type": "array",
+      "title": "Capabilities exposed",
+      "description": "Capabilities exposed by this component to its containing realm",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "from"
+        ],
+        "oneOf": [
+          {
+            "required": [ "service" ]
+          },
+          {
+            "required": [ "directory" ]
+          }
+        ],
+        "properties": {
+          "service": {
+            "title": "Exposed service source path",
+            "description": "The path to the service being exposed. This is either a path in this component's outgoing namespace (if from \"self\"), or the path by which the service was exposed by the child (if from \"#$CHILD\").",
+            "allOf": [{ "$ref": "#/definitions/path-clause" }],
+            "examples": [
+              "/svc/fuchsia.ui.Scenic"
+            ]
+          },
+          "directory": {
+            "title": "Exposed directory source path",
+            "description": "The path to the directory being exposed. This is either a path in this component's outgoing namespace (if from \"self\"), or the path by which the directory was exposed by the child (if from \"#$CHILD\").",
+            "allOf": [{ "$ref": "#/definitions/path-clause" }],
+            "examples": [
+              "/data/assets/widgets"
+            ]
+          },
+          "from": {
+            "title": "Exposed capability source component",
+            "pattern": "^(self|#[0-9a-z_\\-\\.]+)$",
+            "description": "The component which has the capability to expose. Either \"self\" or \"#$CHILD\".",
+            "allOf": [{ "$ref": "#/definitions/relative-ref-clause" }],
+            "examples": [
+              "self",
+              "#scenic"
+            ]
+          },
+          "as": {
+            "title": "Exposed capability target path",
+            "description": "The path under which the capability will be exposed. Defaults to \"service\"/\"directory\"",
+            "allOf": [{ "$ref": "#/definitions/path-clause" }],
+            "examples": [
+              "/svc/fuchsia.logger.Log"
+            ]
+          }
+        }
+      }
+    },
+    "offer": {
+      "type": "array",
+      "title": "Offered capabilities",
+      "description": "Capabilities offered by this component to its children",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "from",
+          "to"
+        ],
+        "oneOf": [
+          {
+            "required": [ "service" ]
+          },
+          {
+            "required": [ "directory" ]
+          },
+          {
+            "required": [ "storage" ]
+          }
+        ],
+        "properties": {
+          "service": {
+            "title": "Offered service source path",
+            "description": "The path to the service being offered. This is either a path in this component's namespace (if from \"self\"), or the path by which the service was exposed or offered from another component (if from \"realm\" or \"#$CHILD\").",
+            "allOf": [{ "$ref": "#/definitions/path-clause" }],
+            "examples": [
+              "/svc/fuchsia.ui.Scenic"
+            ]
+          },
+          "directory": {
+            "title": "Offered directory source path",
+            "description": "The path to the directory being offered. This is either a path in this component's outgoing namespace (if from \"self\"), or the path by which the directory was exposed or offered from another component (if from \"realm\" or \"#$CHILD\").",
+            "allOf": [{ "$ref": "#/definitions/path-clause" }],
+            "examples": [
+              "/svc/fuchsia.ui.Scenic"
+            ]
+          },
+          "storage": {
+            "title": "Offered storage type",
+            "description": "The storage type being offered. Must be one of \"data\", \"cache\", or \"meta\".",
+            "allOf": [{ "$ref": "#/definitions/storage-type-clause" }],
+            "examples": [
+              "data"
+            ]
+          },
+          "from": {
+            "title": "Offered capability source component",
+            "description": "The component which has the capability to offer. For services and directories either \"realm\", \"self\" or \"#$CHILD\", for storage either \"realm\" or \"$STORAGE_SECTION_NAME\".",
+            "pattern": "^(realm|self|#[0-9a-z_\\-\\.]+)$",
+            "allOf": [{ "$ref": "#/definitions/relative-ref-clause" }],
+            "examples": [
+              "realm",
+              "self",
+              "#scenic"
+            ]
+          },
+          "to": {
+            "type": "array",
+            "title": "Offered capability targets",
+            "description": "The components the capability is being offered to",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "dest"
+              ],
+              "properties": {
+                "dest": {
+                  "title": "Offered capability target",
+                  "description": "The child component or collection to which the capability is being offered, with the syntax \"#$CHILD\".",
+                  "pattern": "^#[a-zA-Z0-9_-]+$",
+                  "allOf": [{ "$ref": "#/definitions/relative-ref-clause" }],
+                  "examples": [
+                    "#scenic"
+                  ]
+                },
+                "as": {
+                  "title": "Offered capability target path",
+                  "description": "The path by which the capability will be offered. The path is either a path in this component's namespace (if from \"self\"), or the path by which the capability was exposed or offered from another component (if from \"realm\" or \"#$CHILD\"). Must be omitted for storage capabilities.",
+                  "allOf": [{ "$ref": "#/definitions/relative-ref-clause" }],
+                  "examples": [
+                    "/data/assets/widgets",
+                    "/svc/fuchsia.ui.Scenic"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "storage": {
+      "type": "array",
+      "title": "Storage capabilities",
+      "description": "Declared storage capabilities backed by a directories from which data, cache, or meta storage can be offered.",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "from",
+          "path"
+        ],
+        "properties": {
+          "from": {
+            "title": "Offered directory capability source component",
+            "description": "The component which has the directory capability to use for storage. Either \"realm\", \"self\" or \"#$CHILD\".",
+            "pattern": "^(realm|self|#[0-9a-z_\\-\\.]+)$",
+            "allOf": [{ "$ref": "#/definitions/relative-ref-clause" }],
+            "examples": [
+              "realm",
+              "self",
+              "#scenic"
+            ]
+          },
+          "name": {
+            "title": "Storage name",
+            "description": "The component's local name for this storage",
+            "allOf": [{ "$ref": "#/definitions/name-clause" }],
+            "examples": [
+              "minfs",
+              "persistent_storage"
+            ]
+          },
+          "path": {
+            "title": "Offered directory capability source path",
+            "description": "The path of the directory capability. The path is either a path into the component's outgoing directory (if from \"self\"), or the path by which the capability was exposed or offered from another component (if from \"realm\" or \"#$CHILD\").",
+            "allOf": [{ "$ref": "#/definitions/relative-ref-clause" }],
+            "examples": [
+              "/data/storage",
+              "/minfs"
+            ]
+          }
+        }
+      }
+    },
+    "children": {
+      "type": "array",
+      "title": "Child components",
+      "description": "The children of this component, including name and launch information",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "url"
+        ],
+        "properties": {
+          "name": {
+            "title": "Child component name",
+            "description": "The parent's local name for the child",
+            "allOf": [{ "$ref": "#/definitions/name-clause" }],
+            "examples": [
+              "echo_server",
+              "System-logger"
+            ]
+          },
+          "url": {
+            "title": "Child component URI",
+            "description": "The URI that identifies the child component.",
+            "allOf": [{ "$ref": "#/definitions/url-clause" }],
+            "examples": [
+              "fuchsia-pkg://fuchsia.com/echo_server_cpp#meta/echo_server.cml"
+            ]
+          },
+          "startup": {
+            "title": "Startup mode",
+            "description": "Conditions that trigger the component to start (defaults to \"lazy\")",
+            "allOf": [{ "$ref": "#/definitions/startup-clause" }],
+            "examples": [
+              "eager",
+              "lazy"
+            ]
+          }
+        }
+      }
+    },
+    "collections": {
+      "type": "array",
+      "title": "Collections",
+      "description": "The collections under this component",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "durability"
+        ],
+        "properties": {
+          "name": {
+            "title": "Collection name",
+            "description": "The parent's local name for the collection",
+            "allOf": [{ "$ref": "#/definitions/name-clause" }],
+            "examples": [
+              "modular",
+              "tests"
+            ]
+          },
+          "durability": {
+            "title": "Durability",
+            "description": "The durability of components in the collection. Either \"persistent\" (instances in the collection exist until the parent is destroyed) or \"transient\" (instances in the collection exist until the parent is stopped)",
+            "allOf": [{ "$ref": "#/definitions/durability-clause" }],
+            "examples": [
+              "persistent",
+              "transient"
+            ]
+          }
+        }
+      }
+    },
+    "facets": {
+      "type": "object",
+      "title": "Facets",
+      "description": "Freeform dictionary containing third-party metadata"
+    }
+  }
+}

@@ -1,0 +1,116 @@
+# Copyright 2019 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+#
+# WARNING: This file was machine-generated from previous json files and
+# will eventually be deleted.
+
+group("thermd") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/thermd:config",
+    "//garnet/packages/config:services",
+  ]
+}
+
+group("network") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/sysmgr:network_config",
+    "//garnet/packages/config:services",
+  ]
+}
+
+group("vim2_media_config") {
+  testonly = true
+  public_deps = [
+    "//src/media/audio/vim2_media_config:vim2_media_config",
+  ]
+}
+
+group("openssh_keys") {
+  testonly = true
+  public_deps = [
+    "//third_party/openssh-portable/fuchsia/developer-keys:ssh_config",
+  ]
+}
+
+group("kernel_crash_checker") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/config:services",
+    "//src/developer/kernel_crash_checker:config",
+  ]
+}
+
+group("crashpad_upload_to_prod_server") {
+  testonly = true
+  public_deps = [
+    "//src/developer/crashpad_agent:upload_to_prod_server_config",
+  ]
+}
+
+group("router") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/sysmgr:router_config",
+    "//garnet/packages/config:services",
+  ]
+}
+
+group("amber") {
+  testonly = true
+  public_deps = [
+    "//garnet/go/src/amber:config",
+    "//garnet/packages/config:network",
+  ]
+}
+
+group("sl4f") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/sl4f:sl4f_sysmgr_config",
+  ]
+}
+
+group("amber_auto_ota") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/system-update-checker:auto_update",
+    "//garnet/go/src/amber/ota_config:amber_flags",
+  ]
+}
+
+group("terminal") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/terminal:tiles_with_terminal_config",
+  ]
+}
+
+group("services") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/sysmgr:services_config",
+  ]
+}
+
+group("mediasession") {
+  testonly = true
+  public_deps = [
+    "//src/media/sessions:configs",
+  ]
+}
+
+group("shortcut") {
+  public_deps = [
+    "//src/ui/bin/shortcut:configs",
+  ]
+}
+
+group("virtual_audio") {
+  testonly = true
+  public_deps = [
+    "//src/media/audio/virtual_audio_service:virtual_audio_config",
+  ]
+}

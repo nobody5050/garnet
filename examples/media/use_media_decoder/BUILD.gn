@@ -1,0 +1,102 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/test.gni")
+
+source_set("use_media_decoder_source_set") {
+  testonly = true
+
+  sources = [
+    "test/use_video_decoder_test.cc",
+    "use_aac_decoder.cc",
+    "use_aac_decoder.h",
+    "use_video_decoder.cc",
+    "use_video_decoder.h",
+    "util.cc",
+    "util.h",
+  ]
+
+  public_deps = [
+    "//garnet/lib/media/codec_impl:fourcc",
+    "//garnet/public/lib/component/cpp",
+    "//sdk/fidl/fuchsia.mediacodec",
+    "//third_party/boringssl:crypto",
+    "//zircon/public/lib/async-loop-cpp",
+  ]
+
+  deps = [
+    "//garnet/lib/media/codec_impl:fourcc",
+    "//garnet/lib/media/raw_video_writer:raw_video_writer",
+    "//garnet/lib/media/test:codec_client",
+    "//garnet/lib/media/test:frame_sink",
+    "//garnet/public/lib/component/cpp",
+    "//garnet/public/lib/component/cpp/testing",
+    "//garnet/public/lib/ui/base_view/cpp",
+    "//garnet/public/lib/ui/scenic/cpp",
+    "//src/media/audio/lib/wav_writer:wav_writer",
+    "//zircon/public/lib/async",
+    "//zircon/public/lib/async-cpp",
+  ]
+}
+
+executable("use_media_decoder") {
+  testonly = true
+
+  output_name = "use_media_decoder"
+
+  sources = [
+    "main.cc",
+  ]
+
+  deps = [
+    ":use_media_decoder_source_set",
+    "//garnet/lib/media/test:frame_sink",
+  ]
+}
+
+# This test target uses the AAC decoder the same way as the example program and
+# then also verifies the output data (without writing an output file).
+executable("use_aac_decoder_test") {
+  testonly = true
+  output_name = "use_aac_decoder_test"
+
+  sources = [
+    "test/use_aac_decoder_test.cc",
+  ]
+
+  deps = [
+    ":use_media_decoder_source_set",
+    "//src/lib/fxl/test:gtest_main",
+  ]
+}
+
+# This test target uses the h264 decoder the same way as the example program and
+# then also verifies the output data (without writing an output file).
+test("use_h264_decoder_test") {
+  testonly = true
+
+  output_name = "use_h264_decoder_test"
+
+  sources = [
+    "test/use_h264_decoder_test.cc",
+  ]
+
+  deps = [
+    ":use_media_decoder_source_set",
+  ]
+}
+
+test("use_vp9_decoder_test") {
+  testonly = true
+
+  output_name = "use_vp9_decoder_test"
+
+  sources = [
+    "test/use_vp9_decoder_test.cc",
+  ]
+
+  deps = [
+    ":use_media_decoder_source_set",
+  ]
+}

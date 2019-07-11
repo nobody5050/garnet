@@ -1,0 +1,110 @@
+# Copyright 2017 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/package.gni")
+import("//build/test/test_package.gni")
+
+static_library("perfmon") {
+  sources = [
+    "buffer_reader.cc",
+    "buffer_reader.h",
+    "event-registry.cc",
+    "event-registry.h",
+    "events.cc",
+    "events.h",
+    "file_reader.cc",
+    "file_reader.h",
+    "reader.cc",
+    "reader.h",
+    "records.cc",
+    "records.h",
+    "types.cc",
+    "types.h",
+    "writer.h",
+  ]
+
+  deps = []
+
+  public_deps = [
+    "//src/lib/fxl",
+    "//zircon/public/lib/zircon-internal",
+  ]
+
+  if (is_fuchsia) {
+    sources += [
+      "config.cc",
+      "config.h",
+      "config_impl.h",
+      "controller.cc",
+      "controller.h",
+      "controller_impl.cc",
+      "controller_impl.h",
+      "device_reader.cc",
+      "device_reader.h",
+      "properties.cc",
+      "properties.h",
+      "properties_impl.h",
+    ]
+
+    if (current_cpu == "arm64") {
+      sources += [ "arm64-events.cc" ]
+    }
+    if (current_cpu == "x64") {
+      sources += [ "intel-events.cc" ]
+    }
+
+    deps += [
+      "//zircon/public/lib/fbl",
+      "//zircon/public/lib/fdio",
+      "//zircon/public/lib/fzl",
+    ]
+
+    public_deps += [
+      "//zircon/public/fidl/fuchsia-perfmon-cpu",
+      "//zircon/public/lib/zx",
+    ]
+  } else {
+    sources += [
+      "arm64-events.cc",
+      "intel-events.cc",
+    ]
+  }
+
+  if (!is_fuchsia) {
+    public_deps += [ "//zircon/system/public" ]
+  }
+}
+
+executable("perfmon_tests_app") {
+  testonly = true
+  output_name = "perfmon_tests"
+
+  sources = [
+    "config_unittest.cc",
+  ]
+
+  deps = [
+    ":perfmon",
+    "//src/lib/fxl",
+    "//src/lib/fxl/test:gtest_main",
+    "//third_party/googletest:gtest",
+    "//zircon/public/lib/fdio",
+    "//zircon/public/lib/zx",
+  ]
+
+  libs = [ "zircon" ]
+}
+
+test_package("perfmon_tests") {
+  deps = [
+    ":perfmon_tests_app",
+  ]
+
+  tests = [
+    {
+      name = "perfmon_tests"
+      environments = basic_envs
+    },
+  ]
+}

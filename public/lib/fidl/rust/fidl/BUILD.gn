@@ -1,0 +1,64 @@
+# Copyright 2017 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/fidl/fidl.gni")
+import("//build/rust/rustc_library.gni")
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+rustc_library("fidl") {
+  with_unit_tests = true
+  edition = "2018"
+  deps = [
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-syslog",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//third_party/rust_crates:bitflags",
+    "//third_party/rust_crates:byteorder",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+    "//third_party/rust_crates:futures-test-preview",
+    "//third_party/rust_crates:parking_lot",
+    "//third_party/rust_crates:slab",
+  ]
+}
+
+# not actually used-- just to ensure successful compilation
+fidl("fidl.rust.test.compilation") {
+  sources = [
+    "compilation.test.fidl",
+  ]
+}
+
+# not actually used-- just to ensure successful compilation
+# tests we can compose protocols from another FIDL crate
+fidl("fidl.rust.test.compilation.compose") {
+  sources = [
+    "compilation_compose.test.fidl",
+  ]
+
+  deps = [
+    ":fidl.rust.test.compilation",
+  ]
+}
+
+test_package("rust_fidl_tests") {
+  deps = [
+    ":fidl.rust.test.compilation-rustc",
+    ":fidl_test",
+    "//garnet/public/lib/fidl/rust/fidl_tests:fidl_external_tests",
+  ]
+  tests = [
+    {
+      name = "fidl_lib_test"
+      dest = "fidl_tests"
+      environments = basic_envs
+    },
+    {
+      name = "fidl_external_tests"
+      dest = "fidl_external_tests"
+      environments = basic_envs
+    },
+  ]
+}

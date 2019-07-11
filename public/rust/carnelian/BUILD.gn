@@ -1,0 +1,344 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/package.gni")
+import("//build/rust/rustc_binary.gni")
+import("//build/rust/rustc_library.gni")
+import("//build/test/test_package.gni")
+
+rustc_library("carnelian") {
+  name = "carnelian"
+  with_unit_tests = true
+  version = "0.1.0"
+  edition = "2018"
+  deps = [
+    "//garnet/examples/fidl/services:echo-rustc",
+    "//garnet/public/lib/fidl/rust/fidl",
+    "//garnet/public/rust/fdio",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-component",
+    "//garnet/public/rust/fuchsia-framebuffer",
+    "//garnet/public/rust/fuchsia-scenic",
+    "//garnet/public/rust/fuchsia-syslog",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//garnet/public/rust/mapped-vmo",
+    "//sdk/fidl/fuchsia.fonts:fuchsia.fonts-rustc",
+    "//sdk/fidl/fuchsia.images:fuchsia.images-rustc",
+    "//sdk/fidl/fuchsia.math:fuchsia.math-rustc",
+    "//sdk/fidl/fuchsia.ui.app:fuchsia.ui.app-rustc",
+    "//sdk/fidl/fuchsia.ui.gfx:fuchsia.ui.gfx-rustc",
+    "//sdk/fidl/fuchsia.ui.input:fuchsia.ui.input-rustc",
+    "//sdk/fidl/fuchsia.ui.scenic:fuchsia.ui.scenic-rustc",
+    "//sdk/fidl/fuchsia.ui.views:fuchsia.ui.views-rustc",
+    "//third_party/rust_crates:chrono",
+    "//third_party/rust_crates:euclid",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+    "//third_party/rust_crates:itertools",
+    "//third_party/rust_crates:lazy_static",
+    "//third_party/rust_crates:rand",
+    "//third_party/rust_crates:rusttype",
+    "//zircon/public/fidl/fuchsia-mem:fuchsia-mem-rustc",
+  ]
+}
+
+rustc_binary("spinning_square_example") {
+  version = "0.1.0"
+  edition = "2018"
+  source_root = "examples/spinning_square.rs"
+  deps = [
+    "//garnet/examples/fidl/services:echo-rustc",
+    "//garnet/public/lib/fidl/rust/fidl",
+    "//garnet/public/rust/carnelian",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-scenic",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//sdk/fidl/fuchsia.ui.input:fuchsia.ui.input-rustc",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+  ]
+}
+
+rustc_binary("embedding_example") {
+  version = "0.1.0"
+  edition = "2018"
+  source_root = "examples/embedding.rs"
+  deps = [
+    "//garnet/public/lib/fidl/rust/fidl",
+    "//garnet/public/rust/carnelian",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-component",
+    "//garnet/public/rust/fuchsia-scenic",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//sdk/fidl/fuchsia.math:fuchsia.math-rustc",
+    "//sdk/fidl/fuchsia.ui.app:fuchsia.ui.app-rustc",
+    "//sdk/fidl/fuchsia.ui.gfx:fuchsia.ui.gfx-rustc",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+    "//third_party/rust_crates:itertools",
+  ]
+}
+
+rustc_binary("button_example") {
+  version = "0.1.0"
+  edition = "2018"
+  source_root = "examples/button.rs"
+  deps = [
+    "//garnet/public/rust/carnelian",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-scenic",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//sdk/fidl/fuchsia.ui.input:fuchsia.ui.input-rustc",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+  ]
+}
+
+rustc_binary("perf_test_01") {
+  version = "0.1.0"
+  edition = "2018"
+  source_root = "examples/perf_test_01.rs"
+  deps = [
+    "//garnet/public/rust/carnelian",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-scenic",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//sdk/fidl/fuchsia.ui.input:fuchsia.ui.input-rustc",
+    "//third_party/rust_crates:euclid",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+    "//third_party/rust_crates:rand",
+  ]
+}
+
+rustc_binary("perf_test_02") {
+  version = "0.1.0"
+  edition = "2018"
+  source_root = "examples/perf_test_02.rs"
+  deps = [
+    "//garnet/public/rust/carnelian",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-scenic",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//third_party/rust_crates:euclid",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+  ]
+}
+
+rustc_binary("perf_test_03") {
+  version = "0.1.0"
+  edition = "2018"
+  source_root = "examples/perf_test_03.rs"
+  deps = [
+    "//garnet/public/rust/carnelian",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-scenic",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//third_party/rust_crates:chrono",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+  ]
+}
+
+rustc_binary("perf_test_04") {
+  version = "0.1.0"
+  edition = "2018"
+  source_root = "examples/perf_test_04.rs"
+  deps = [
+    "//garnet/public/rust/carnelian",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-scenic",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+  ]
+}
+
+rustc_binary("drawing") {
+  version = "0.1.0"
+  edition = "2018"
+  source_root = "examples/drawing.rs"
+  deps = [
+    "//garnet/public/rust/carnelian",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-framebuffer",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+  ]
+}
+
+package("spinning_square_rs") {
+  deps = [
+    ":spinning_square_example",
+  ]
+
+  binaries = [
+    {
+      name = "app"
+      source = "spinning_square_example"
+    },
+  ]
+
+  meta = [
+    {
+      path = rebase_path("meta/example.cmx")
+      dest = "spinning_square_rs.cmx"
+    },
+  ]
+}
+
+package("embedding_rs") {
+  deps = [
+    ":embedding_example",
+  ]
+
+  binaries = [
+    {
+      name = "app"
+      source = "embedding_example"
+    },
+  ]
+
+  meta = [
+    {
+      path = rebase_path("meta/example.cmx")
+      dest = "embedding_rs.cmx"
+    },
+  ]
+}
+
+package("button_rs") {
+  deps = [
+    ":button_example",
+  ]
+
+  binaries = [
+    {
+      name = "app"
+      source = "button_example"
+    },
+  ]
+
+  meta = [
+    {
+      path = rebase_path("meta/example.cmx")
+      dest = "button_rs.cmx"
+    },
+  ]
+}
+
+package("perf_test_01_rs") {
+  deps = [
+    ":perf_test_01",
+  ]
+
+  binaries = [
+    {
+      name = "app"
+      source = "perf_test_01"
+    },
+  ]
+
+  meta = [
+    {
+      path = rebase_path("meta/example.cmx")
+      dest = "perf_test_01_rs.cmx"
+    },
+  ]
+}
+
+package("perf_test_02_rs") {
+  deps = [
+    ":perf_test_02",
+  ]
+
+  binaries = [
+    {
+      name = "app"
+      source = "perf_test_02"
+    },
+  ]
+
+  meta = [
+    {
+      path = rebase_path("meta/example.cmx")
+      dest = "perf_test_02_rs.cmx"
+    },
+  ]
+}
+
+package("perf_test_03_rs") {
+  deps = [
+    ":perf_test_03",
+  ]
+
+  binaries = [
+    {
+      name = "app"
+      source = "perf_test_03"
+    },
+  ]
+
+  meta = [
+    {
+      path = rebase_path("meta/example.cmx")
+      dest = "perf_test_03_rs.cmx"
+    },
+  ]
+}
+
+package("perf_test_04_rs") {
+  deps = [
+    ":perf_test_04",
+  ]
+
+  binaries = [
+    {
+      name = "app"
+      source = "perf_test_04"
+    },
+  ]
+
+  meta = [
+    {
+      path = rebase_path("meta/example.cmx")
+      dest = "perf_test_04_rs.cmx"
+    },
+  ]
+}
+
+package("drawing_rs") {
+  deps = [
+    ":drawing",
+  ]
+
+  binaries = [
+    {
+      name = "app"
+      source = "drawing"
+    },
+  ]
+
+  meta = [
+    {
+      path = rebase_path("meta/example.cmx")
+      dest = "drawing_rs.cmx"
+    },
+  ]
+}
+
+unittest_package("carnelian_tests") {
+  deps = [
+    ":carnelian_test",
+  ]
+
+  tests = [
+    {
+      name = "carnelian_lib_test"
+      environments = basic_envs
+    },
+  ]
+}

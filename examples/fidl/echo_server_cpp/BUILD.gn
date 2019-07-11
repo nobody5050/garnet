@@ -1,0 +1,80 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+source_set("lib") {
+  sources = [
+    "echo_server_app.cc",
+    "echo_server_app.h",
+  ]
+
+  public_deps = [
+    "//garnet/examples/fidl/services:echo",
+    "//sdk/lib/fidl/cpp",
+    "//sdk/lib/sys/cpp",
+  ]
+}
+
+executable("bin") {
+  output_name = "echo_server_cpp"
+
+  sources = [
+    "echo_server.cc",
+  ]
+
+  deps = [
+    ":lib",
+    "//zircon/public/lib/async-default",
+    "//zircon/public/lib/async-loop-cpp",
+  ]
+}
+
+package("echo_server_cpp") {
+  deps = [
+    ":bin",
+  ]
+  binaries = [
+    {
+      name = "echo_server_cpp"
+      dest = "echo_server"
+    },
+  ]
+
+  meta = [
+    {
+      path = rebase_path("../meta/echo_server.cmx")
+      dest = "echo_server_cpp.cmx"
+    },
+  ]
+}
+
+executable("echo_server_cpp_unittests") {
+  testonly = true
+
+  sources = [
+    "echo_server_app_unittest.cc",
+  ]
+
+  deps = [
+    ":lib",
+    "//garnet/public/lib/gtest",
+    "//sdk/lib/sys/cpp/testing:unit",
+    "//src/lib/fxl/test:gtest_main",
+  ]
+}
+
+test_package("echo_server_cpp_tests") {
+  deps = [
+    ":echo_server_cpp_unittests",
+  ]
+
+  tests = [
+    {
+      name = "echo_server_cpp_unittests"
+      environments = basic_envs
+    },
+  ]
+}

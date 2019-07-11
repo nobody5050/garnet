@@ -1,0 +1,24 @@
+{
+    "program": {
+        "binary": "bin/trace"
+    },
+    "sandbox": {
+        "features": [
+            "deprecated-shell",
+            "isolated-persistent-storage",
+            "system-temp"
+        ],
+        "services": [
+            "fuchsia.logger.LogSink",
+            "fuchsia.process.Launcher",
+            "fuchsia.process.Resolver",
+            "fuchsia.sys.Environment",
+            "fuchsia.sys.Launcher",
+            "fuchsia.tracing.provider.Registry",
+            "fuchsia.tracing.controller.Controller"
+        ],
+        "system": [
+            "bin"
+        ]
+    }
+}

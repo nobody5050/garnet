@@ -1,0 +1,13 @@
+{
+    "program": {
+        "binary": "bin/screencap"
+    },
+    "sandbox": {
+        "services": [
+            "fuchsia.logger.LogSink",
+            "fuchsia.tracing.provider.Registry",
+            "fuchsia.ui.scenic.Scenic",
+            "fuchsia.vulkan.loader.Loader"
+        ]
+    }
+}

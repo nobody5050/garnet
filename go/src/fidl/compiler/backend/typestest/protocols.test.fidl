@@ -1,0 +1,55 @@
+library test.name;
+
+protocol WithAndWithoutRequestResponse {
+    NoRequestNoResponse();
+    NoRequestEmptyResponse() -> ();
+    NoRequestWithResponse() -> (string ret);
+    WithRequestNoResponse(string arg);
+    WithRequestEmptyResponse(string arg) -> ();
+    WithRequestWithResponse(string arg) -> (string ret);
+    -> OnEmptyResponse();
+    -> OnWithResponse(string ret);
+};
+
+enum ErrorEnun {
+    ERR_FOO = 1;
+    ERR_BAR = 2;
+};
+
+protocol WithErrorSyntax {
+    ErrorAsPrimitive() -> () error uint32;
+    ErrorAsEnum() -> () error ErrorEnun;
+};
+
+[Transport="OvernetInternal"]
+protocol OvernetInternalProtocol {
+    MethodA(int64 a, int64 b);
+    -> EventA(int64 a, int64 b);
+    MethodB(int64 a, int64 b) -> (int64 result);
+    MutateSocket(handle<socket> a) -> (handle<socket> b);
+};
+
+[Transport="SocketControl"]
+protocol SocketControlProtocol {
+    MethodA(int64 a, int64 b);
+    -> EventA(int64 a, int64 b);
+    MethodB(int64 a, int64 b) -> (int64 result);
+    MutateSocket(handle<socket> a) -> (handle<socket> b);
+};
+
+[Transport="Channel"]
+protocol ChannelProtocol {
+    MethodA(int64 a, int64 b);
+    -> EventA(int64 a, int64 b);
+    MethodB(int64 a, int64 b) -> (int64 result);
+    MutateSocket(handle<socket> a) -> (handle<socket> b);
+};
+
+// This is not expected to generate code that could be built.
+[Transport="Channel, SocketControl, OvernetInternal"]
+protocol KitchenSink {
+    MethodA(int64 a, int64 b);
+    -> EventA(int64 a, int64 b);
+    MethodB(int64 a, int64 b) -> (int64 result);
+    MutateSocket(handle<socket> a) -> (handle<socket> b);
+};

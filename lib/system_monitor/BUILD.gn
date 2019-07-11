@@ -1,0 +1,32 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/test.gni")
+
+test("system_monitor_tests") {
+  testonly = true
+  deps = [
+    "//garnet/lib/system_monitor:tests",
+    "//garnet/lib/system_monitor/dockyard:tests",
+    "//src/lib/fxl/test:gtest_main",
+  ]
+}
+
+source_set("lib") {
+  sources = [
+    "gt_log.cc",
+  ]
+}
+
+source_set("tests") {
+  testonly = true
+
+  sources = [
+    "gt_log_test.cc",
+  ]
+
+  deps = [
+    "//third_party/googletest:gtest",
+  ]
+}

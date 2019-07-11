@@ -1,0 +1,177 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/package.gni")
+import("//build/rust/rustc_binary.gni")
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+executable("fidl_compatibility_test_executable") {
+  output_name = "fidl_compatibility_test"
+
+  testonly = true
+
+  sources = [
+    "compatibility_test.cc",
+  ]
+
+  deps = [
+    "//garnet/public/lib/fidl/compatibility_test:compatibility_test_service",
+    "//garnet/public/lib/fidl/compatibility_test:echo_client_app",
+    "//sdk/lib/fidl/cpp",
+    "//sdk/lib/sys/cpp",
+    "//src/lib/files",
+    "//src/lib/fxl",
+    "//src/lib/fxl/test:test_settings",
+    "//third_party/googletest:gtest",
+    "//zircon/public/lib/async-default",
+    "//zircon/public/lib/async-loop-cpp",
+  ]
+}
+
+executable("compatibility_test_server_cpp_bin") {
+  output_name = "compatibility_test_server_cpp"
+
+  sources = [
+    "compatibility_test_server_cpp.cc",
+  ]
+
+  deps = [
+    "//garnet/public/lib/fidl/compatibility_test:compatibility_test_service",
+    "//garnet/public/lib/fidl/compatibility_test:echo_client_app",
+    "//sdk/lib/fidl/cpp",
+    "//sdk/lib/sys/cpp",
+    "//src/lib/fxl",
+    "//zircon/public/lib/async-default",
+    "//zircon/public/lib/async-loop-cpp",
+  ]
+}
+
+executable("compatibility_test_server_llcpp_bin") {
+  output_name = "compatibility_test_server_llcpp"
+
+  sources = [
+    "compatibility_test_server_llcpp.cc",
+  ]
+
+  deps = [
+    "//garnet/public/lib/fidl/compatibility_test:compatibility_test_service_llcpp",
+    "//sdk/lib/sys/cpp",
+    "//zircon/public/lib/async-default",
+    "//zircon/public/lib/async-loop",
+    "//zircon/public/lib/async-loop-cpp",
+    "//zircon/public/lib/fdio",
+    "//zircon/public/lib/fidl-async-cpp",
+  ]
+}
+
+rustc_binary("compatibility_test_server_rust_bin") {
+  name = "compatibility_test_server_rust"
+  edition = "2018"
+  source_root = "compatibility_test_server_rust.rs"
+
+  deps = [
+    "//garnet/public/lib/fidl/compatibility_test:compatibility_test_service-rustc",
+    "//garnet/public/lib/fidl/rust/fidl",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-component",
+    "//sdk/fidl/fuchsia.sys:fuchsia.sys-rustc",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+  ]
+}
+
+copy("run_fidl_compatibility_test_garnet_sh") {
+  sources = [
+    "run_fidl_compatibility_test_garnet.sh",
+  ]
+  outputs = [
+    "${root_build_dir}/run_fidl_compatibility_test_garnet.sh",
+  ]
+}
+
+package("fidl_compatibility_test_server_cpp") {
+  deps = [
+    ":compatibility_test_server_cpp_bin",
+  ]
+
+  meta = [
+    {
+      path = "meta/fidl_compatibility_test_server_cpp.cmx"
+      dest = "fidl_compatibility_test_server_cpp.cmx"
+    },
+  ]
+
+  testonly = true
+
+  binary = "compatibility_test_server_cpp"
+}
+
+package("fidl_compatibility_test_server_llcpp") {
+  deps = [
+    ":compatibility_test_server_llcpp_bin",
+  ]
+
+  meta = [
+    {
+      path = "meta/fidl_compatibility_test_server_llcpp.cmx"
+      dest = "fidl_compatibility_test_server_llcpp.cmx"
+    },
+  ]
+
+  testonly = true
+
+  binary = "compatibility_test_server_llcpp"
+}
+
+package("fidl_compatibility_test_server_rust") {
+  deps = [
+    ":compatibility_test_server_rust_bin",
+  ]
+
+  meta = [
+    {
+      path = "meta/fidl_compatibility_test_server_rust.cmx"
+      dest = "fidl_compatibility_test_server_rust.cmx"
+    },
+  ]
+
+  testonly = true
+
+  binary = "compatibility_test_server_rust"
+}
+
+# The test binary that gets invoked by shell scripts.
+# TODO(ianloic): remove this after topaz move to components has passed GI
+package("fidl_compatibility_test_bin") {
+  package_name = "fidl_compatibility_test_bin"
+
+  deps = [
+    ":fidl_compatibility_test_executable",
+  ]
+
+  meta = [
+    {
+      path = "meta/fidl_compatibility_test_bin.cmx"
+      dest = "fidl_compatibility_test_bin.cmx"
+    },
+  ]
+
+  testonly = true
+
+  binary = "fidl_compatibility_test"
+}
+
+test_package("fidl_compatibility_test") {
+  deps = [
+    ":fidl_compatibility_test_executable",
+  ]
+
+  tests = [
+    {
+      name = "fidl_compatibility_test"
+      environments = basic_envs
+    },
+  ]
+}

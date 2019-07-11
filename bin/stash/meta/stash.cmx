@@ -1,0 +1,9 @@
+{
+    "program": {
+        "binary": "bin/app"
+    },
+    "sandbox": {
+        "features": [ "isolated-persistent-storage" ],
+        "services": [ "fuchsia.logger.LogSink" ]
+    }
+}

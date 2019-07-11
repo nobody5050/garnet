@@ -1,0 +1,10 @@
+{
+    "program": {
+        "binary": "bin/tiles_ctl"
+    },
+    "sandbox": {
+        "services": [
+            "fuchsia.tracing.provider.Registry"
+        ]
+    }
+}

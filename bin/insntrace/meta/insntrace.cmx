@@ -1,0 +1,12 @@
+{
+    "program": {
+        "binary": "bin/insntrace"
+    },
+    "sandbox": {
+        "dev": [ "sys/cpu-trace" ],
+        "features": [
+          "isolated-persistent-storage",
+          "system-temp"
+        ]
+    }
+}

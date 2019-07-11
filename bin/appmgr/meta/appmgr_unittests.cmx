@@ -1,0 +1,16 @@
+{
+    "program": {
+        "binary": "test/appmgr_unittests"
+    },
+    "sandbox": {
+        "features": [
+            "deprecated-shell",
+            "shell-commands",
+            "system-temp"
+        ],
+        "services": [
+            "fuchsia.process.Resolver",
+            "fuchsia.process.Launcher"
+        ]
+    }
+}

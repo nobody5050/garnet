@@ -1,0 +1,84 @@
+# Copyright 2017 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+source_set("surface_header") {
+  sources = [
+    "image_pipe_surface.h",
+  ]
+  public_deps = [
+    "//sdk/fidl/fuchsia.images",
+    "//src/graphics/lib/vulkan",
+  ]
+}
+
+loadable_module("swapchain") {
+  output_name = "libVkLayer_image_pipe_swapchain"
+  sources = [
+    "image_pipe_surface_async.cc",
+    "image_pipe_surface_async.h",
+    "image_pipe_swapchain_layer.cc",
+  ]
+  deps = [
+    ":surface_header",
+    "//src/graphics/lib/vulkan:micro_layer_common",
+    "//zircon/public/lib/async-loop-cpp",
+  ]
+  ldflags = [ "-static-libstdc++" ]
+}
+
+source_set("display") {
+  sources = [
+    "image_pipe_surface_display.cc",
+    "image_pipe_surface_display.h",
+  ]
+  deps = [
+    ":surface_header",
+    "//src/graphics/lib/vulkan:micro_layer_common",
+    "//zircon/public/fidl/fuchsia-hardware-display:fuchsia-hardware-display_c",
+    "//zircon/public/fidl/fuchsia-sysmem",
+    "//zircon/public/lib/async-cpp",
+    "//zircon/public/lib/fbl",
+    "//zircon/public/lib/fdio",
+    "//zircon/public/lib/fzl",
+  ]
+  public_deps = [
+    "//zircon/public/fidl/fuchsia-hardware-display",
+    "//zircon/public/lib/async-loop-cpp",
+  ]
+}
+
+loadable_module("fb") {
+  output_name = "libVkLayer_image_pipe_swapchain_fb"
+  defines = [
+    "USE_IMAGEPIPE_SURFACE_FB",
+    "USE_IMAGEPIPE_LAYER_NAME=\"VK_LAYER_FUCHSIA_imagepipe_swapchain_fb\"",
+  ]
+  sources = [
+    "image_pipe_swapchain_layer.cc",
+  ]
+  deps = [
+    ":display",
+    ":surface_header",
+    "//src/graphics/lib/vulkan:micro_layer_common",
+  ]
+  ldflags = [ "-static-libstdc++" ]
+}
+
+loadable_module("fb_skip_present") {
+  output_name = "libVkLayer_image_pipe_swapchain_fb_skip_present"
+  defines = [
+    "USE_IMAGEPIPE_SURFACE_FB",
+    "USE_IMAGEPIPE_LAYER_NAME=\"VK_LAYER_FUCHSIA_imagepipe_swapchain_fb_skip_present\"",
+    "SKIP_PRESENT",
+  ]
+  sources = [
+    "image_pipe_swapchain_layer.cc",
+  ]
+  deps = [
+    ":display",
+    ":surface_header",
+    "//src/graphics/lib/vulkan:micro_layer_common",
+  ]
+  ldflags = [ "-static-libstdc++" ]
+}

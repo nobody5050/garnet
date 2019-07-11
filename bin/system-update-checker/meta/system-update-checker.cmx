@@ -1,0 +1,21 @@
+{
+    "program": {
+        "binary": "bin/system-update-checker"
+    },
+    "sandbox": {
+        "features": [
+            "deprecated-misc-storage"
+        ],
+        "pkgfs": [
+            "ctl"
+        ],
+        "services": [
+            "fuchsia.logger.LogSink",
+            "fuchsia.pkg.PackageResolver",
+            "fuchsia.sys.Launcher"
+        ],
+        "system": [
+            "meta"
+        ]
+    }
+}

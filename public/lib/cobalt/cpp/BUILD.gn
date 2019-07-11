@@ -1,0 +1,38 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//third_party/cobalt_config/metrics_registry.gni")
+
+source_set("deprecated_cobalt_logger") {
+  sources = [
+    "deprecated_cobalt_logger.cc",
+    "deprecated_cobalt_logger.h",
+    "deprecated_cobalt_logger_impl.cc",
+    "deprecated_cobalt_logger_impl.h",
+  ]
+
+  public_deps = [
+    "//garnet/public/lib/component/cpp",
+    "//src/lib/cobalt/cpp:cobalt_logger",
+    "//src/lib/fxl",
+    "//zircon/public/lib/fit",
+  ]
+
+  # This library is deprecated.
+  #
+  # Use //src/lib/cobalt/cpp instead.
+  #
+  # DO NOT ADD MORE ENTRIES TO THIS LIST.
+  visibility = [
+    "//src/ledger/bin/cobalt",
+    "//src/ledger/lib/firebase_auth",
+    "//peridot/bin/basemgr/cobalt",
+  ]
+
+  deps = [
+    "//garnet/public/lib/backoff",
+    "//garnet/public/lib/callback",
+    "//zircon/public/fidl/fuchsia-cobalt",
+  ]
+}

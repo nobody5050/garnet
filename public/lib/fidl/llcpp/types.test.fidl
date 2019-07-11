@@ -1,0 +1,34 @@
+// Copyright 2019 The Fuchsia Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+library fidl.llcpp.types.test;
+
+struct CopyableStruct {
+  int32 x;
+};
+
+struct MoveOnlyStruct {
+  handle? h;
+};
+
+/// Verifies that user code can manipulate these union payloads.
+union TestUnion {
+  int32 primitive;
+  CopyableStruct copyable;
+  MoveOnlyStruct move_only;
+};
+
+/// Verifies that user code can manipulate these bits.
+///
+/// We use a uint8 since most bitwise operations will cast their operands to
+/// int, and therefore special casting is required to properly compile.
+bits SampleBits : uint8 {
+    B = 2;
+    D = 4;
+    E = 8;
+};
+
+protocol TestInterface {
+  TestMethod(TestUnion u) -> (TestUnion u);
+};

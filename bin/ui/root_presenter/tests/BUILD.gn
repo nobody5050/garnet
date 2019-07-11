@@ -1,0 +1,42 @@
+# Copyright 2018 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+group("tests") {
+  testonly = true
+
+  public_deps = [
+    ":root_presenter_tests",
+  ]
+}
+
+executable("root_presenter_tests") {
+  output_name = "root_presenter_tests"
+
+  testonly = true
+
+  sources = [
+    "display_configuration_unittest.cc",
+    "factory_reset_manager_test.cc",
+    "input_util_unittest.cc",
+  ]
+
+  deps = [
+    "//garnet/bin/ui/root_presenter:displays",
+    "//garnet/bin/ui/root_presenter:factory_reset_manager",
+    "//garnet/bin/ui/root_presenter:key_util",
+    "//garnet/public/lib/component/cpp/testing",
+    "//garnet/public/lib/gtest",
+    "//sdk/fidl/fuchsia.recovery",
+    "//sdk/fidl/fuchsia.ui.input",
+    "//sdk/fidl/fuchsia.ui.input2",
+    "//sdk/fidl/fuchsia.ui.policy",
+    "//sdk/lib/fidl/cpp",
+    "//sdk/lib/sys/cpp",
+    "//src/lib/fxl",
+    "//src/lib/fxl/test:gtest_main",
+    "//zircon/public/fidl/fuchsia-inspect",
+    "//zircon/public/lib/fs",
+    "//zircon/public/lib/hid",
+  ]
+}

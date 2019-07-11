@@ -1,0 +1,71 @@
+# Copyright 2019 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/package.gni")
+import("//build/test.gni")
+
+config("media_test_include_config") {
+  include_dirs = [ "include" ]
+}
+
+source_set("frame_sink") {
+  testonly = true
+
+  sources = [
+    "frame_sink.cc",
+    "frame_sink_view.cc",
+  ]
+
+  include_dirs = [ "include" ]
+
+  public_configs = [ ":media_test_include_config" ]
+
+  public = [
+    "include/lib/media/test/frame_sink.h",
+    "include/lib/media/test/frame_sink_view.h",
+  ]
+
+  public_deps = [
+    "//garnet/public/lib/ui/base_view/cpp",
+    "//zircon/public/lib/async",
+    "//zircon/public/lib/async-cpp",
+    "//zircon/public/lib/async-loop-cpp",
+  ]
+
+  deps = [
+    "//garnet/lib/media/codec_impl:fourcc",
+    "//garnet/lib/media/raw_video_writer:raw_video_writer",
+    "//garnet/public/lib/component/cpp",
+    "//garnet/public/lib/ui/scenic/cpp",
+    "//sdk/fidl/fuchsia.mediacodec",
+    "//src/media/audio/lib/wav_writer:wav_writer",
+  ]
+}
+
+source_set("codec_client") {
+  testonly = true
+
+  sources = [
+    "codec_buffer.cc",
+    "codec_client.cc",
+    "codec_output.cc",
+  ]
+
+  include_dirs = [ "include" ]
+
+  public_configs = [ ":media_test_include_config" ]
+
+  public = [
+    "include/lib/media/test/codec_buffer.h",
+    "include/lib/media/test/codec_client.h",
+    "include/lib/media/test/codec_output.h",
+  ]
+
+  deps = [
+    "//garnet/public/lib/component/cpp",
+    "//sdk/fidl/fuchsia.mediacodec",
+    "//src/lib/fxl",
+    "//zircon/public/lib/async-loop-cpp",
+  ]
+}

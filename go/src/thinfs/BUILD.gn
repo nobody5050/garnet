@@ -1,0 +1,103 @@
+# Copyright 2016 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/go/go_binary.gni")
+import("//build/go/go_library.gni")
+import("//build/go/go_test.gni")
+import("//build/host.gni")
+import("//build/package.gni")
+import("//build/test/test_package.gni")
+
+go_library("thinfs_lib") {
+  name = "thinfs"
+
+  deps = [
+    "//garnet/public/go/third_party:github.com/golang/glog",
+    "//garnet/public/go/third_party:github.com/pkg/errors",
+  ]
+}
+
+go_test("thinfs_bitops_test") {
+  gopackage = "thinfs/bitops"
+
+  deps = [
+    ":thinfs_lib",
+  ]
+}
+
+go_test("thinfs_block_fake_test") {
+  gopackage = "thinfs/block/fake"
+
+  deps = [
+    ":thinfs_lib",
+  ]
+}
+
+go_test("thinfs_block_file_test") {
+  gopackage = "thinfs/block/file"
+
+  deps = [
+    ":thinfs_lib",
+  ]
+}
+
+go_test("thinfs_cache_test") {
+  gopackage = "thinfs/cache"
+
+  deps = [
+    ":thinfs_lib",
+  ]
+}
+
+go_test("thinfs_gpt_test") {
+  gopackage = "thinfs/gpt"
+
+  deps = [
+    ":thinfs_lib",
+  ]
+}
+
+go_test("thinfs_mbr_test") {
+  gopackage = "thinfs/mbr"
+
+  deps = [
+    ":thinfs_lib",
+  ]
+}
+
+go_test("thinfs_thinio_test") {
+  gopackage = "thinfs/thinio"
+
+  deps = [
+    ":thinfs_lib",
+  ]
+}
+
+go_test("thinfs_zircon_rpc_test") {
+  gopackage = "thinfs/zircon/rpc"
+
+  deps = [
+    ":thinfs_lib",
+  ]
+}
+
+unittest_package("go_thinfs_tests") {
+  deps = [
+    ":thinfs_bitops_test($host_toolchain)",
+    ":thinfs_block_fake_test($host_toolchain)",
+    ":thinfs_block_file_test($host_toolchain)",
+    ":thinfs_cache_test($host_toolchain)",
+    ":thinfs_gpt_test($host_toolchain)",
+    ":thinfs_mbr_test($host_toolchain)",
+    ":thinfs_thinio_test($host_toolchain)",
+    ":thinfs_zircon_rpc_test",
+  ]
+
+  tests = [
+    {
+      name = "thinfs_zircon_rpc_test"
+      environments = basic_envs
+    },
+  ]
+}

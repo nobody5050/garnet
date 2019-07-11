@@ -1,0 +1,105 @@
+# Copyright 2018 The  Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config.gni")
+import("//build/package.gni")
+import("//build/rust/rustc_binary.gni")
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+
+rustc_binary("bin") {
+  name = "sl4f"
+  with_unit_tests = true
+  edition = "2018"
+
+  deps = [
+    "//garnet/lib/rust/connectivity-testing",
+    "//garnet/lib/wlan/fidl:fidl-rustc",
+    "//garnet/lib/wlan/fidl:service-rustc",
+    "//garnet/lib/wlan/fidl:sme-rustc",
+    "//garnet/public/lib/fidl/rust/fidl",
+    "//garnet/public/rust/fdio",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-component",
+    "//garnet/public/rust/fuchsia-scenic",
+    "//garnet/public/rust/fuchsia-syslog",
+    "//garnet/public/rust/fuchsia-vfs/fuchsia-vfs-watcher",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//garnet/public/rust/mapped-vmo",
+    "//sdk/fidl/fuchsia.auth:fuchsia.auth-rustc",
+    "//sdk/fidl/fuchsia.auth.testing:fuchsia.auth.testing-rustc",
+    "//sdk/fidl/fuchsia.bluetooth:fuchsia.bluetooth-rustc",
+    "//sdk/fidl/fuchsia.bluetooth.control:fuchsia.bluetooth.control-rustc",
+    "//sdk/fidl/fuchsia.bluetooth.gatt:fuchsia.bluetooth.gatt-rustc",
+    "//sdk/fidl/fuchsia.bluetooth.le:fuchsia.bluetooth.le-rustc",
+    "//sdk/fidl/fuchsia.images:fuchsia.images-rustc",
+    "//sdk/fidl/fuchsia.intl:fuchsia.intl-rustc",
+    "//sdk/fidl/fuchsia.media:fuchsia.media-rustc",
+    "//sdk/fidl/fuchsia.modular.internal:fuchsia.modular.internal-rustc",
+    "//sdk/fidl/fuchsia.setui:fuchsia.setui-rustc",
+    "//sdk/fidl/fuchsia.ui.app:fuchsia.ui.app-rustc",
+    "//sdk/fidl/fuchsia.ui.policy:fuchsia.ui.policy-rustc",
+    "//sdk/fidl/fuchsia.ui.scenic:fuchsia.ui.scenic-rustc",
+    "//sdk/fidl/fuchsia.virtualaudio:fuchsia.virtualaudio-rustc",
+    "//sdk/fidl/fuchsia.web:fuchsia.web-rustc",
+    "//src/connectivity/bluetooth/lib/fuchsia-bluetooth",
+    "//third_party/rust_crates:base64",
+    "//third_party/rust_crates:byteorder",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+    "//third_party/rust_crates:glob",
+    "//third_party/rust_crates:parking_lot",
+    "//third_party/rust_crates:rand",
+    "//third_party/rust_crates:regex",
+    "//third_party/rust_crates:rouille",
+    "//third_party/rust_crates:serde",
+    "//third_party/rust_crates:serde_derive",
+    "//third_party/rust_crates:serde_json",
+    "//third_party/rust_crates:slab",
+    "//third_party/rust_crates:void",
+    "//zircon/public/fidl/fuchsia-mem:fuchsia-mem-rustc",
+    "//zircon/public/fidl/fuchsia-net-stack:fuchsia-net-stack-rustc",
+  ]
+}
+
+package("sl4f") {
+  deprecated_shell = "//build"
+
+  meta = [
+    {
+      path = "meta/sl4f.cmx"
+      dest = "sl4f.cmx"
+    },
+  ]
+
+  deps = [
+    ":bin",
+  ]
+
+  binary = "sl4f"
+}
+
+unittest_package("sl4f-tests") {
+  deps = [
+    ":bin_test",
+  ]
+
+  tests = [
+    {
+      name = "sl4f_bin_test"
+      dest = "sl4f_bin_test"
+      environments = basic_envs
+    },
+  ]
+}
+
+config_data("sl4f_sysmgr_config") {
+  for_pkg = "sysmgr"
+  outputs = [
+    "sl4f.config",
+  ]
+  sources = [
+    "config/sl4f_sysmgr.config",
+  ]
+}

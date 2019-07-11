@@ -1,0 +1,1065 @@
+# Copyright 2019 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+#
+# WARNING: This file was machine-generated from previous json files and
+# will eventually be deleted.
+
+group("archivist") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/archivist",
+  ]
+}
+
+group("tz-util") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/tz-util",
+  ]
+}
+
+group("broadcom") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/wlan/drivers/third_party/broadcom/brcmfmac",
+    "//src/connectivity/wlan/drivers/wlanif",
+    "//src/connectivity/wlan/drivers/wlanphy",
+  ]
+}
+
+group("bluetooth_hid") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/bluetooth/profiles/bt-hog",
+  ]
+}
+
+group("netcfg") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/netcfg",
+    "//garnet/bin/netcfg:config",
+    "//garnet/packages/config:services",
+  ]
+}
+
+group("fonts") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/fonts",
+  ]
+}
+
+group("tracing") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/cpuperf_provider",
+    "//garnet/bin/cpuperf_provider:report_generators",
+    "//garnet/bin/ktrace_provider",
+    "//garnet/bin/trace",
+    "//garnet/bin/trace2json",
+    "//garnet/bin/trace_manager",
+    "//garnet/bin/traceutil",
+    "//src/developer/memory/monitor",
+  ]
+}
+
+group("thermd") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/thermd",
+  ]
+}
+
+group("bluetooth_intel") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:bluetooth_hci",
+    "//src/connectivity/bluetooth/hci/intel",
+  ]
+}
+
+group("scenic") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/ui:root_presenter",
+    "//garnet/bin/ui:scenic",
+    "//garnet/packages/prod:sysmem_connector",
+    "//garnet/packages/prod:vulkan",
+    "//src/ui/bin/ime:ime_service",
+  ]
+}
+
+group("network") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/http",
+    "//garnet/packages/prod:netcfg",
+    "//garnet/packages/prod:netstack",
+  ]
+}
+
+group("cpuperf") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/cpuperf",
+    "//garnet/bin/cpuperf/print:host_cpuperf_print",
+  ]
+}
+
+group("installblob") {
+  testonly = true
+  public_deps = [
+    "//garnet/go/src/installblob",
+  ]
+}
+
+group("feedback_agent") {
+  testonly = true
+  public_deps = [
+    "//src/developer/feedback_agent",
+  ]
+}
+
+group("auth") {
+  testonly = true
+  public_deps = [
+    "//src/identity/bin:core",
+  ]
+}
+
+group("bindc") {
+  testonly = true
+  public_deps = [
+    "//tools/bindc",
+  ]
+}
+
+group("ssh") {
+  testonly = true
+  public_deps = [
+    "//third_party/openssh-portable:openssh-tools",
+  ]
+}
+
+group("sysmgr") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/sysmgr",
+  ]
+}
+
+group("drivers") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:bluetooth_drivers",
+    "//garnet/packages/prod:usb_video",
+    "//garnet/packages/prod:virtual_audio_driver",
+    "//garnet/packages/prod:virtual_camera",
+    "//garnet/packages/prod:vulkan",
+    "//garnet/packages/prod:wlan_drivers",
+    "//src/camera/drivers",
+    "//src/connectivity/telephony:drivers",
+  ]
+  if (target_cpu == "arm64") {
+    public_deps += [ "//garnet/packages/prod:amlogic_video_decoder" ]
+  }
+  if (target_cpu == "x64") {
+    public_deps += [
+      "//garnet/packages/prod:goldfish-vulkan",
+      "//garnet/packages/prod:magma-intel-gen",
+    ]
+  }
+}
+
+group("debugserver") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/debugserver",
+  ]
+}
+
+group("xi_core") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/xi_core",
+  ]
+}
+
+group("all") {
+  testonly = true
+  public_deps = [
+    ":drivers",
+    "//garnet/go/src/amber:pkgfs",
+    "//garnet/packages/prod:amber",
+    "//garnet/packages/prod:appmgr",
+    "//garnet/packages/prod:archivist",
+    "//garnet/packages/prod:atheros",
+    "//garnet/packages/prod:auth",
+    "//garnet/packages/prod:banjo",
+    "//garnet/packages/prod:bindc",
+    "//garnet/packages/prod:bluetooth_a2dp",
+    "//garnet/packages/prod:bluetooth_all",
+    "//garnet/packages/prod:bluetooth_atheros",
+    "//garnet/packages/prod:bluetooth_avrcp",
+    "//garnet/packages/prod:bluetooth_core",
+    "//garnet/packages/prod:bluetooth_hci",
+    "//garnet/packages/prod:bluetooth_hid",
+    "//garnet/packages/prod:bluetooth_intel",
+    "//garnet/packages/prod:bluetooth_profiles",
+    "//garnet/packages/prod:broadcom",
+    "//garnet/packages/prod:chrealm",
+    "//garnet/packages/prod:cmdutils",
+    "//garnet/packages/prod:cobalt_client",
+    "//garnet/packages/prod:cpuperf",
+    "//garnet/packages/prod:crashpad_agent",
+    "//garnet/packages/prod:debug_agent",
+    "//garnet/packages/prod:debugserver",
+    "//garnet/packages/prod:device_settings",
+    "//garnet/packages/prod:display_manager",
+    "//garnet/packages/prod:drivers",
+    "//garnet/packages/prod:far",
+    "//garnet/packages/prod:feedback_agent",
+    "//garnet/packages/prod:fonts",
+    "//garnet/packages/prod:fortune",
+    "//garnet/packages/prod:guest_runner",
+    "//garnet/packages/prod:insntrace",
+    "//garnet/packages/prod:installblob",
+    "//garnet/packages/prod:iquery",
+    "//garnet/packages/prod:kernel_crash_checker",
+    "//garnet/packages/prod:log_listener",
+    "//garnet/packages/prod:logger",
+    "//garnet/packages/prod:magma-arm-mali",
+    "//garnet/packages/prod:magma-img-rgx-mt8167",
+    "//garnet/packages/prod:magma-qcom-adreno",
+    "//garnet/packages/prod:media",
+    "//garnet/packages/prod:media_audio",
+    "//garnet/packages/prod:media_codec",
+    "//garnet/packages/prod:mediaplayer",
+    "//garnet/packages/prod:mediasession",
+    "//garnet/packages/prod:memory_monitor",
+    "//garnet/packages/prod:net-cli",
+    "//garnet/packages/prod:net_ctl",
+    "//garnet/packages/prod:netcfg",
+    "//garnet/packages/prod:netstack",
+    "//garnet/packages/prod:netstack3",
+    "//garnet/packages/prod:netstack_tools",
+    "//garnet/packages/prod:network",
+    "//garnet/packages/prod:network-speed-test",
+    "//garnet/packages/prod:odu",
+    "//garnet/packages/prod:omaha_client",
+    "//garnet/packages/prod:openssh",
+    "//garnet/packages/prod:overnetstack",
+    "//garnet/packages/prod:pkg_cache",
+    "//garnet/packages/prod:pkg_ctl",
+    "//garnet/packages/prod:pkg_resolver",
+    "//garnet/packages/prod:pm",
+    "//garnet/packages/prod:ralink",
+    "//garnet/packages/prod:realtek",
+    "//garnet/packages/prod:root_ssl_certificates",
+    "//garnet/packages/prod:run",
+    "//garnet/packages/prod:runtime",
+    "//garnet/packages/prod:sbase",
+    "//garnet/packages/prod:scenic",
+    "//garnet/packages/prod:scenic_tools",
+    "//garnet/packages/prod:scpi",
+    "//garnet/packages/prod:setui_client",
+    "//garnet/packages/prod:setui_service",
+    "//garnet/packages/prod:ssh",
+    "//garnet/packages/prod:stash",
+    "//garnet/packages/prod:sysmem-assistant",
+    "//garnet/packages/prod:sysmem_connector",
+    "//garnet/packages/prod:sysmgr",
+    "//garnet/packages/prod:tee_manager",
+    "//garnet/packages/prod:telephony",
+    "//garnet/packages/prod:terminal",
+    "//garnet/packages/prod:test_runner",
+    "//garnet/packages/prod:thermd",
+    "//garnet/packages/prod:tiles",
+    "//garnet/packages/prod:timezone",
+    "//garnet/packages/prod:tracing",
+    "//garnet/packages/prod:tts",
+    "//garnet/packages/prod:tz-util",
+    "//garnet/packages/prod:vboot_reference",
+    "//garnet/packages/prod:vim",
+    "//garnet/packages/prod:wlan_drivers",
+    "//garnet/packages/prod:wlanif",
+    "//garnet/packages/prod:wlanphy",
+    "//garnet/packages/prod:xi_core",
+    "//src/connectivity/network/dhcp:dhcpd",
+    "//src/connectivity/network/mdns/bundles:services",
+    "//src/connectivity/network/mdns/bundles:utils",
+    "//src/connectivity/telephony:drivers",
+    "//src/connectivity/wlan:service",
+    "//src/connectivity/wlan:tools",
+    "//src/developer/memory/mem",
+    "//src/ui/a11y:a11y",
+  ]
+}
+
+group("sysmem-assistant") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/sysmem-assistant",
+    "//garnet/bin/sysmem-assistant:secmem-ta",
+    "//garnet/packages/prod:tee_manager",
+  ]
+}
+
+group("atheros") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/wlan/drivers/third_party/atheros/ath10k:ath10k",
+    "//src/connectivity/wlan/drivers/wlan",
+    "//src/connectivity/wlan/drivers/wlanphy",
+  ]
+}
+
+group("wifi_intel") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/wlan/drivers/third_party/intel/iwlwifi:iwlwifi",
+    "//src/connectivity/wlan/drivers/wlan",
+    "//src/connectivity/wlan/drivers/wlanphy",
+  ]
+}
+
+group("realtek") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/wlan/drivers/realtek/rtl88xx",
+    "//src/connectivity/wlan/drivers/wlan",
+    "//src/connectivity/wlan/drivers/wlanphy",
+  ]
+}
+
+group("net-cli") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/net-cli",
+  ]
+}
+
+group("pm") {
+  testonly = true
+  public_deps = [
+    "//garnet/go/src/pm",
+    "//garnet/go/src/pm:host",
+  ]
+}
+
+group("memory_monitor") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/config:services",
+    "//src/developer/memory/monitor",
+  ]
+}
+
+group("netstack") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:netcfg",
+    "//src/connectivity/network/netstack",
+  ]
+}
+
+group("netstack3") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/network/netstack3",
+    "//src/connectivity/network/netstack3/tools:netstack3_tools",
+  ]
+}
+
+group("overnetstack") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/overnet/overnetstack",
+    "//src/connectivity/overnet/tools/ascendd",
+    "//src/connectivity/overnet/tools/onet",
+  ]
+}
+
+group("insntrace") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/insntrace",
+    "//garnet/bin/insntrace:host_insntrace_print",
+  ]
+}
+
+group("setui_service") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/setui:setui_service",
+  ]
+}
+
+group("openssh") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/sshd-host",
+  ]
+}
+
+group("display_manager") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/display_manager",
+  ]
+}
+
+group("guest_runner") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/config:network",
+    "//garnet/packages/prod:amber",
+    "//garnet/packages/prod:runtime",
+    "//src/virtualization/bin/guest:guest",
+    "//src/virtualization/bin/guest_manager:guest_manager",
+    "//src/virtualization/bin/guest_runner:guest_runner",
+    "//src/virtualization/bin/vmm",
+    "//src/virtualization/bin/vmm/device:virtio_balloon",
+    "//src/virtualization/bin/vmm/device:virtio_block",
+    "//src/virtualization/bin/vmm/device:virtio_console",
+    "//src/virtualization/bin/vmm/device:virtio_gpu",
+    "//src/virtualization/bin/vmm/device:virtio_input",
+    "//src/virtualization/bin/vmm/device:virtio_magma",
+    "//src/virtualization/bin/vmm/device:virtio_net",
+    "//src/virtualization/bin/vmm/device:virtio_rng",
+    "//src/virtualization/bin/vmm/device:virtio_wl",
+  ]
+}
+
+group("usb_video") {
+  testonly = true
+  public_deps = [
+    "//src/camera/drivers/usb_video",
+  ]
+}
+
+group("virtual_camera") {
+  testonly = true
+  public_deps = [
+    "//src/camera/drivers/virtual_camera",
+  ]
+}
+
+group("media_audio") {
+  testonly = true
+  public_deps = [
+    "//src/media/audio/audio",
+    "//src/media/audio/audio_core",
+  ]
+}
+
+group("bluetooth_atheros") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:bluetooth_hci",
+    "//src/connectivity/bluetooth/hci/atheros",
+  ]
+}
+
+group("bluetooth_hci") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/bluetooth/hci/passthrough",
+  ]
+}
+
+group("cmdutils") {
+  testonly = true
+  public_deps = [
+    "//examples/cowsay",
+    "//garnet/bin/time",
+    "//garnet/bin/uname",
+    "//garnet/packages/prod:sbase",
+    "//garnet/packages/prod:vim",
+  ]
+}
+
+group("pkg_ctl") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/pkg_ctl",
+  ]
+}
+
+group("bluetooth_drivers") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/bluetooth/core/bt-host",
+    "//src/connectivity/bluetooth/hci/atheros",
+    "//src/connectivity/bluetooth/hci/emulator",
+    "//src/connectivity/bluetooth/hci/intel",
+    "//src/connectivity/bluetooth/hci/passthrough",
+    "//src/connectivity/bluetooth/profiles/bt-hog",
+  ]
+}
+
+group("scpi") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/scpi",
+  ]
+}
+
+group("vboot_reference") {
+  testonly = true
+  public_deps = [
+    "//garnet/tools/vboot_reference:cgpt_host",
+    "//garnet/tools/vboot_reference:futility_host",
+  ]
+}
+
+group("net_ctl") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/net_ctl",
+  ]
+}
+
+group("odu") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/odu",
+  ]
+}
+
+group("kernel_crash_checker") {
+  testonly = true
+  public_deps = [
+    "//src/developer/kernel_crash_checker",
+  ]
+}
+
+group("cobalt_client") {
+  testonly = true
+  public_deps = [
+    "//src/cobalt/bin/app:cobalt",
+    "//src/cobalt/bin/system-metrics:cobalt_system_metrics",
+  ]
+}
+
+group("media_codec") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/media:codec_factory",
+    "//garnet/bin/media:codec_runner_sw_ffmpeg",
+    "//garnet/bin/media:codec_runner_sw_sbc",
+  ]
+}
+
+group("banjo") {
+  testonly = true
+  public_deps = [
+    "//tools/banjo/banjo",
+  ]
+}
+
+group("mediaplayer") {
+  testonly = true
+  public_deps = [
+    "//src/media/playback/mediaplayer",
+  ]
+}
+
+group("log_listener") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/log_listener:log_listener",
+    "//garnet/bin/log_listener:log_listener_shell",
+  ]
+}
+
+group("bluetooth_profiles") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:bluetooth_a2dp",
+    "//garnet/packages/prod:bluetooth_avrcp",
+    "//garnet/packages/prod:bluetooth_hid",
+  ]
+}
+
+group("crashpad_agent") {
+  testonly = true
+  public_deps = [
+    "//src/developer/crashpad_agent",
+  ]
+}
+
+group("media") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:media_audio",
+    "//garnet/packages/prod:media_codec",
+    "//garnet/packages/prod:mediaplayer",
+    "//garnet/packages/prod:mediasession",
+    "//garnet/packages/prod:tts",
+    "//src//camera/simple_camera/simple_camera_server:simple_camera_server_cpp",
+    "//src/camera/camera_manager",
+  ]
+}
+
+group("scenic_tools") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/tools:scenic",
+  ]
+}
+
+group("pkg_cache") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/pkg_cache",
+  ]
+}
+
+group("root_ssl_certificates") {
+  testonly = true
+  public_deps = [
+    "//garnet/lib/root_ssl_certificates",
+  ]
+}
+
+group("network_time") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/network_time_service",
+  ]
+}
+
+group("logger") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/logger",
+  ]
+}
+
+group("vim") {
+  testonly = true
+  public_deps = [
+    "//third_party/vim",
+  ]
+}
+
+group("telephony") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/telephony/drivers/qmi-fake-transport",
+    "//src/connectivity/telephony/drivers/qmi-usb-transport",
+    "//src/connectivity/telephony/ril-qmi",
+    "//src/connectivity/telephony/ril-qmi:ril-qmi-tests",
+    "//src/connectivity/telephony/telephony",
+    "//src/connectivity/telephony/tools/ril-ctl",
+  ]
+}
+
+group("tiles") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/developer/tiles",
+  ]
+}
+
+group("timezone") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/timezone",
+  ]
+}
+
+group("virtual_audio_driver") {
+  testonly = true
+  public_deps = [
+    "//src/media/audio/drivers/virtual_audio",
+  ]
+}
+
+group("vulkan") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/vulkan_loader",
+    "//garnet/packages/prod:sysmem_connector",
+  ]
+}
+
+group("run") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/run",
+  ]
+}
+
+group("netstack_tools") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/tools:netstack",
+  ]
+}
+
+group("pkg_resolver") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/pkg_resolver",
+  ]
+}
+
+group("chrealm") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/chrealm",
+  ]
+}
+
+group("bluetooth_avrcp") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/bluetooth/profiles/bt-avrcp",
+  ]
+}
+
+group("bluetooth_a2dp") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/bluetooth/profiles/bt-a2dp-sink",
+  ]
+}
+
+group("amber") {
+  testonly = true
+  public_deps = [
+    "//garnet/go/src/amber",
+    "//garnet/go/src/amber:amber_tools",
+  ]
+}
+
+group("network-speed-test") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/network-speed-test",
+  ]
+}
+
+group("sbase") {
+  testonly = true
+  public_deps = [
+    "//third_party/sbase:basename",
+    "//third_party/sbase:cal",
+    "//third_party/sbase:cat",
+    "//third_party/sbase:cksum",
+    "//third_party/sbase:cmp",
+    "//third_party/sbase:cols",
+    "//third_party/sbase:comm",
+    "//third_party/sbase:cp",
+    "//third_party/sbase:cut",
+    "//third_party/sbase:date",
+    "//third_party/sbase:dirname",
+    "//third_party/sbase:du",
+    "//third_party/sbase:echo",
+    "//third_party/sbase:ed",
+    "//third_party/sbase:env",
+    "//third_party/sbase:expand",
+    "//third_party/sbase:expr",
+    "//third_party/sbase:false",
+    "//third_party/sbase:find",
+    "//third_party/sbase:fold",
+    "//third_party/sbase:grep",
+    "//third_party/sbase:head",
+    "//third_party/sbase:hostname",
+    "//third_party/sbase:join",
+    "//third_party/sbase:link",
+    "//third_party/sbase:ls",
+    "//third_party/sbase:md5sum",
+    "//third_party/sbase:mkdir",
+    "//third_party/sbase:mktemp",
+    "//third_party/sbase:mv",
+    "//third_party/sbase:nl",
+    "//third_party/sbase:od",
+    "//third_party/sbase:paste",
+    "//third_party/sbase:pathchk",
+    "//third_party/sbase:printenv",
+    "//third_party/sbase:printf",
+    "//third_party/sbase:pwd",
+    "//third_party/sbase:readlink",
+    "//third_party/sbase:rev",
+    "//third_party/sbase:rm",
+    "//third_party/sbase:rmdir",
+    "//third_party/sbase:sed",
+    "//third_party/sbase:seq",
+    "//third_party/sbase:sha1sum",
+    "//third_party/sbase:sha224sum",
+    "//third_party/sbase:sha256sum",
+    "//third_party/sbase:sha384sum",
+    "//third_party/sbase:sha512-224sum",
+    "//third_party/sbase:sha512-256sum",
+    "//third_party/sbase:sha512sum",
+    "//third_party/sbase:sleep",
+    "//third_party/sbase:sort",
+    "//third_party/sbase:split",
+    "//third_party/sbase:sponge",
+    "//third_party/sbase:strings",
+    "//third_party/sbase:sync",
+    "//third_party/sbase:tail",
+    "//third_party/sbase:tar",
+    "//third_party/sbase:tee",
+    "//third_party/sbase:test",
+    "//third_party/sbase:tftp",
+    "//third_party/sbase:touch",
+    "//third_party/sbase:tr",
+    "//third_party/sbase:true",
+    "//third_party/sbase:tsort",
+    "//third_party/sbase:tty",
+    "//third_party/sbase:unexpand",
+    "//third_party/sbase:uniq",
+    "//third_party/sbase:unlink",
+    "//third_party/sbase:uudecode",
+    "//third_party/sbase:uuencode",
+    "//third_party/sbase:wc",
+    "//third_party/sbase:which",
+    "//third_party/sbase:whoami",
+    "//third_party/sbase:xargs",
+    "//third_party/sbase:xinstall",
+    "//third_party/sbase:yes",
+  ]
+}
+
+group("test_runner") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/test_runner:run_integration_tests",
+    "//garnet/bin/test_runner:run_test",
+  ]
+}
+
+group("runtime") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:amber",
+    "//garnet/packages/prod:appmgr",
+    "//garnet/packages/prod:sysmgr",
+  ]
+}
+
+group("device_settings") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/device_settings:device_settings_manager",
+  ]
+}
+
+group("terminal") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/terminal",
+  ]
+}
+
+group("wlanif") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/wlan/drivers/wlan",
+    "//src/connectivity/wlan/drivers/wlanif",
+  ]
+}
+
+group("tts") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:media_audio",
+    "//src/speech/tts:tts_service",
+  ]
+}
+
+if (target_cpu == "arm64") {
+  group("amlogic_video_decoder") {
+    testonly = true
+    public_deps = [
+      "//garnet/drivers/video/amlogic-decoder:amlogic_video_decoder",
+      "//garnet/drivers/video/amlogic-decoder:amlogic_video_decoder_test_build",
+    ]
+  }
+}
+
+group("stash") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/stash:stash",
+    "//garnet/bin/stash_ctl:stash_ctl",
+  ]
+}
+
+group("wlanphy") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/wlan/drivers/wlan",
+    "//src/connectivity/wlan/drivers/wlanphy",
+  ]
+}
+
+group("far") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/far",
+    "//garnet/bin/far:host",
+  ]
+}
+
+group("mediasession") {
+  testonly = true
+  public_deps = [
+    "//src/media/sessions",
+  ]
+}
+
+group("ralink") {
+  testonly = true
+  public_deps = [
+    "//src/connectivity/wlan/drivers/mediatek/ralink",
+    "//src/connectivity/wlan/drivers/wlan",
+    "//src/connectivity/wlan/drivers/wlanphy",
+  ]
+}
+
+group("iquery") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/iquery",
+  ]
+}
+
+group("bluetooth_core") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:bluetooth_hci",
+    "//src/connectivity/bluetooth/core/bt-gap",
+    "//src/connectivity/bluetooth/core/bt-host",
+    "//src/connectivity/bluetooth/core/bt-init",
+    "//src/connectivity/bluetooth/tools/bt-snoop",
+  ]
+}
+
+group("appmgr") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/appmgr",
+    "//garnet/bin/appmgr:appmgr_scheme_config",
+  ]
+}
+
+group("debug_agent") {
+  testonly = true
+  public_deps = [
+    "//src/developer/debug/debug_agent",
+  ]
+}
+
+group("sysmem_connector") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/sysmem_connector",
+  ]
+}
+
+group("wlan_drivers") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:atheros",
+    "//garnet/packages/prod:broadcom",
+    "//garnet/packages/prod:ralink",
+    "//garnet/packages/prod:realtek",
+    "//garnet/packages/prod:wifi_intel",
+    "//garnet/packages/prod:wlanif",
+    "//garnet/packages/prod:wlanphy",
+  ]
+}
+
+group("fortune") {
+  testonly = true
+  public_deps = [
+    "//examples/fortune",
+  ]
+}
+
+group("bluetooth_all") {
+  testonly = true
+  public_deps = [
+    "//garnet/packages/prod:bluetooth_atheros",
+    "//garnet/packages/prod:bluetooth_core",
+    "//garnet/packages/prod:bluetooth_intel",
+    "//garnet/packages/prod:bluetooth_profiles",
+  ]
+}
+
+group("magma-arm-mali") {
+  testonly = true
+  public_deps = [
+    "//garnet/lib/magma/gnbuild/magma-arm-mali:magma-vulkan",
+    "//garnet/packages/prod:sysmem_connector",
+  ]
+}
+
+if (target_cpu == "x64") {
+  group("magma-intel-gen") {
+    testonly = true
+    public_deps = [
+      "//garnet/lib/magma/gnbuild/magma-intel-gen:magma-vulkan",
+      "//garnet/packages/prod:sysmem_connector",
+    ]
+  }
+}
+
+group("magma-img-rgx-mt8167") {
+  testonly = true
+  public_deps = [
+    "//garnet/lib/magma/gnbuild/magma-img-rgx:magma-vulkan",
+  ]
+}
+
+group("magma-qcom-adreno") {
+  testonly = true
+  public_deps = [
+    "//garnet/lib/magma/gnbuild/magma-qcom-adreno:magma-vulkan",
+    "//garnet/packages/prod:sysmem_connector",
+  ]
+}
+
+group("magma-vsl-gc") {
+  testonly = true
+  public_deps = [
+    "//garnet/lib/magma/gnbuild/magma-vsl-gc:magma-vulkan",
+  ]
+}
+
+group("omaha_client") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/omaha_client",
+    "//garnet/bin/omaha_client_ctl",
+  ]
+}
+
+group("setui_client") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/setui_client",
+  ]
+}
+
+group("tee_manager") {
+  testonly = true
+  public_deps = [
+    "//garnet/bin/tee_manager",
+    "//garnet/bin/tee_manager:config",
+  ]
+}
+
+group("goldfish-vulkan") {
+  testonly = true
+  public_deps = [
+    "//garnet/lib/goldfish-vulkan/gnbuild:goldfish-vulkan",
+  ]
+}

@@ -1,0 +1,86 @@
+# Copyright 2019 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/fidl/fidl.gni")
+import("//build/package.gni")
+import("//build/rust/rustc_binary.gni")
+import("//build/test/test_package.gni")
+import("//build/testing/environments.gni")
+import("//third_party/cobalt_config/metrics_registry.gni")
+
+rustc_binary("bin") {
+  name = "omaha_client_service"
+  with_unit_tests = true
+  edition = "2018"
+
+  deps = [
+    ":fuchsia.omaha.client-rustc",
+    ":mos_metrics_registry_rustlib",
+    "//garnet/lib/rust/omaha_client",
+    "//garnet/public/lib/fidl/rust/fidl",
+    "//garnet/public/rust/fuchsia-async",
+    "//garnet/public/rust/fuchsia-component",
+    "//garnet/public/rust/fuchsia-hyper",
+    "//garnet/public/rust/fuchsia-syslog",
+    "//garnet/public/rust/fuchsia-zircon",
+    "//sdk/fidl/fuchsia.stash:fuchsia.stash-rustc",
+    "//sdk/fidl/fuchsia.sys:fuchsia.sys-rustc",
+    "//sdk/fidl/fuchsia.update.installer:fuchsia.update.installer-rustc",
+    "//sdk/fidl/fuchsia.update:fuchsia.update-rustc",
+    "//src/lib/cobalt/rust:fuchsia-cobalt",
+    "//src/sys/lib/fuchsia_url:fuchsia_url",
+    "//third_party/rust_crates:failure",
+    "//third_party/rust_crates:futures-preview",
+    "//third_party/rust_crates:hyper",
+    "//third_party/rust_crates:hyper-rustls",
+    "//third_party/rust_crates:log",
+    "//third_party/rust_crates:timebomb",
+    "//zircon/public/fidl/fuchsia-cobalt:fuchsia-cobalt-rustc",
+  ]
+}
+
+package("omaha_client") {
+  deps = [
+    ":bin",
+  ]
+
+  binaries = [
+    {
+      name = "omaha_client_service"
+      dest = "omaha_client_service"
+    },
+  ]
+
+  meta = [
+    {
+      path = rebase_path("meta/omaha_client_service.cmx")
+      dest = "omaha_client_service.cmx"
+    },
+  ]
+}
+
+test_package("omaha_client_service_bin_tests") {
+  deps = [
+    ":bin_test",
+  ]
+
+  tests = [
+    {
+      name = "omaha_client_service_bin_test"
+      environments = basic_envs
+    },
+  ]
+}
+
+fidl("fuchsia.omaha.client") {
+  sources = [
+    "fuchsia.omaha.client.fidl",
+  ]
+}
+
+metrics_registry("mos_metrics_registry") {
+  project_name = "managed_os"
+  generate_rust = true
+  generate_binarypb = false
+}

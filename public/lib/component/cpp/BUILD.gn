@@ -1,0 +1,156 @@
+# Copyright 2016 The Fuchsia Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+source_set("cpp") {
+  sources = [
+    "connect.h",
+    "outgoing.cc",
+    "outgoing.h",
+    "startup_context.cc",
+    "startup_context.h",
+  ]
+
+  deps = [
+    "//garnet/public/lib/syslog/cpp",
+    "//zircon/public/lib/async-default",
+    "//zircon/public/lib/fdio",
+  ]
+
+  public_deps = [
+    ":deprecated_service_provider",
+    "//garnet/public/lib/svc/cpp",
+    "//sdk/fidl/fuchsia.sys",
+    "//sdk/lib/fidl/cpp",
+    "//zircon/public/fidl/fuchsia-inspect",
+    "//zircon/public/lib/fit",
+    "//zircon/public/lib/fs",
+    "//zircon/public/lib/zx",
+  ]
+
+  public_configs = [ "//garnet/public:config" ]
+
+  # This library is deprecated.
+  #
+  # Use //sdk/lib/sys/cpp instead.
+  #
+  # DO NOT ADD MORE ENTRIES TO THIS LIST.
+  visibility = [
+    ":environment_services",
+    "testing/*",
+    "//src/virtualization/*",
+    "//garnet/bin/media/*",
+    "//garnet/bin/ui/set_renderer_params_HACK:*",
+    "//garnet/bin/ui/present_view:*",
+    "//garnet/bin/ui/screencap:*",
+    "//garnet/bin/ui/benchmarks/transparency_benchmark:*",
+    "//garnet/bin/ui/gltf_export:*",
+    "//garnet/bin/ui/root_presenter:*",
+    "//garnet/bin/ui/snapshot:*",
+    "//garnet/bin/ui/tests/performance/vulkan_is_supported/*",
+    "//garnet/examples/media/use_media_decoder/*",
+    "//garnet/examples/media/use_media_decoder/*",
+    "//garnet/examples/media/use_media_decoder/*",
+    "//garnet/examples/media/use_media_decoder/*",
+    "//garnet/examples/ui/bouncing_ball/*",
+    "//garnet/examples/ui/embedder/*",
+    "//garnet/examples/ui/embedder/*",
+    "//garnet/examples/ui/lab/direct_input/*",
+    "//garnet/examples/ui/lab/direct_input/child/*",
+    "//garnet/examples/ui/lab/pose_buffer/*",
+    "//garnet/examples/ui/lab/pose_buffer_presenter/*",
+    "//garnet/examples/ui/lab/scenic_dev_app/*",
+    "//garnet/examples/ui/lab/stereo_app/*",
+    "//garnet/examples/ui/shadertoy/client/*",
+    "//garnet/examples/ui/shadertoy/service/*",
+    "//garnet/examples/ui/standalone_app/*",
+    "//garnet/examples/ui/video_display/*",
+    "//garnet/examples/ui/yuv_to_image_pipe/*",
+    "//src/camera/camera_manager/*",
+    "//src/camera/examples/*",
+    "//src/camera/simple_camera/*",
+    "//garnet/lib/media/test/*",
+    "//garnet/lib/media/test/*",
+    "//garnet/lib/vulkan/tests/vkcube/*",
+    "//garnet/public/lib/cobalt/cpp/*",
+    "//garnet/public/lib/guest/*",
+    "//garnet/public/lib/test_runner/cpp/*",
+    "//garnet/public/lib/ui/base_view/cpp/*",
+    "//garnet/public/lib/ui/tests/mocks/*",
+    "//garnet/public/lib/ui/view_framework/*",
+    "//garnet/tests/e2e_input_tests/*",
+    "//peridot/bin/basemgr/*",
+    "//peridot/bin/basemgr/cobalt/*",
+    "//peridot/bin/basemgr_launcher:basemgr_launcher_bin",
+    "//peridot/bin/context_engine/*",
+    "//peridot/bin/module_resolver/*",
+    "//peridot/bin/sessionmgr/*",
+    "//peridot/bin/suggestion_engine/*",
+    "//peridot/examples/simple/*",
+    "//peridot/examples/todo_cpp/*",
+    "//peridot/lib/bound_set/*",
+    "//peridot/lib/fidl/*",
+    "//peridot/lib/module_manifest/*",
+    "//peridot/lib/module_manifest_source/*",
+    "//peridot/lib/testing/*",
+    "//peridot/public/lib/app_driver/cpp/*",
+    "//peridot/public/lib/integration_testing/cpp/*",
+    "//peridot/tests/maxwell_integration/*",
+    "//peridot/tests/sessionctl/*",
+
+    # TODO(SCN-1329): move playback to lib/sys.
+    "//src/media/playback/*",
+
+    "//topaz/app/term:*",
+    "//topaz/bin/ui/skottie_viewer:*",
+    "//vendor/*",
+  ]
+}
+
+source_set("deprecated_service_provider") {
+  sources = [
+    "service_provider_impl.cc",
+    "service_provider_impl.h",
+  ]
+
+  public_deps = [
+    "//sdk/fidl/fuchsia.sys",
+  ]
+
+  public_configs = [ "//garnet/public:config" ]
+
+  # This library is deprecated.
+  #
+  # Use a directory(sys::ServiceDirectory) instead.
+  #
+  # DO NOT ADD MORE ENTRIES TO THIS LIST.
+  visibility = [
+    "//src/ledger/bin/p2p_provider/impl",
+    ":cpp",
+  ]
+}
+
+source_set("environment_services") {
+  sources = [
+    "environment_services_helper.cc",
+    "environment_services_helper.h",
+  ]
+
+  public_deps = [
+    ":cpp",
+  ]
+
+  # This library is deprecated.
+  #
+  # Use //sdk/lib/sys/cpp instead.
+  #
+  # DO NOT ADD MORE ENTRIES TO THIS LIST.
+  visibility = [
+    "//garnet/bin/appmgr:*",
+    "//src/connectivity/wlan/drivers/wlan:*",
+
+    # TODO(CF-664): move playback to lib/sys.
+    "//src/media/playback/*",
+    "testing",
+  ]
+}
